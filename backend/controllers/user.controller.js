@@ -4,8 +4,8 @@ const { validateEmail } = require('../helpers/helpers');
 const User = mongoose.model('User');
 
 module.exports.login = async (req, res) => {
-    const { login, password } = req.body;
-    const user = await User.findOne({ login, password });
+    const { loginOrEmail, password } = req.body;
+    const user = await User.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }], password });
 
     if (!user) {
         res.status(404).send({ error: 'User not found' });
