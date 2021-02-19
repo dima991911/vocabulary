@@ -1,11 +1,13 @@
-const { isTokenCorrect } = require('../helpers/helpers');
+const { decodeToken } = require('../helpers/helpers');
 
 const isAuth = (req, res, next) => {
     const { token } = req.query;
 
-    if (!token || !isTokenCorrect(token)) {
-        throw new Error('You dont auth');
+    const currentUser = decodeToken(token);
+    if (!token || !currentUser) {
+        res.status(401).send({ message: 'You dont auth' });
     } else {
+        req.currentUser = currentUser;
         next();
     }
 };

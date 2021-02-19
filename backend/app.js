@@ -30,7 +30,8 @@ mongoose.set('debug', true);
 mongoose.set('useCreateIndex', true);
 
 // Models for db
-require('./models/Users');
+require('./models/User');
+require('./models/Word');
 
 app.use(require('./routes'));
 
