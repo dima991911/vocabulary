@@ -32,6 +32,8 @@ const UserSchema = new Schema({
         default: 'ua',
     },
     words: [{ type: Schema.Types.ObjectId, ref: 'Word' }],
+}, {
+    timestamps: true
 });
 
 UserSchema.methods.generateJWT = function () {

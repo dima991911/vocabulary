@@ -1,9 +1,10 @@
 const { jwt } = require('../config/index');
 const jsonwebtoken = require('jsonwebtoken');
 
-module.exports.isTokenCorrect = token => {
-    return jsonwebtoken.verify(token, jwt.secret, err => {
-        return !err;
+module.exports.decodeToken = token => {
+    return jsonwebtoken.verify(token, jwt.secret, (err, decoded) => {
+        if (err) return false;
+        return decoded;
     });
 };
 

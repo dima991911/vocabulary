@@ -19,7 +19,22 @@ const WordSchema = new Schema({
         type: String,
         required: true,
     },
-    users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    countTranslate: {
+        type: Number,
+        default: 1,
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
+    firstTranslate: {
+        type: Schema.Types.ObjectId,
+        ref: 'Word',
+        default: null,
+    },
+    creator: { type: Schema.Types.ObjectId, ref: 'User' },
+}, {
+    timestamps: true
 });
 
 mongoose.model('Word', WordSchema);
