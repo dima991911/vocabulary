@@ -1,0 +1,17 @@
+@import '~antd/dist/antd.css';
+
+.site-layout-background {
+    background-color: #fff;
+}
+
+.main-section {
+    min-height: 100vh;
+}
+
+.content-section {
+    margin: 30px;
+}
+
+.content-section-wrapper {
+    background: #fff;
+}
