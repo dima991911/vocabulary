@@ -43,6 +43,7 @@ module.exports.getWords = async (req, res) => {
     res.status(200).json({ user });
 };
 
+// TODO: create logic
 module.exports.editWord = async (req, res) => {
     const { word, translate, wordLanguage, translateLanguage } = req.body;
     const { id } = req.params;
