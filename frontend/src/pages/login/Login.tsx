@@ -13,17 +13,17 @@ type FromValuesType = {
 }
 
 export const Login: React.FC<PropsType> = () => {
-    const onFinish = (values: FromValuesType) => {
+    const onLogin = (values: FromValuesType): void => {
         console.log(values);
     };
 
     return (
-        <div className="login-page">
+        <div className="centered-flex full-height">
             <Form
-                name="normal_login"
+                name="login-form"
                 className="login-form"
                 initialValues={{ remember: true }}
-                onFinish={onFinish}
+                onFinish={onLogin}
             >
                 <Form.Item
                     name="loginOrEmail"
