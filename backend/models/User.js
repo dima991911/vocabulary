@@ -27,11 +27,11 @@ const UserSchema = new Schema({
         sparse: true,
     },
     nativeLanguage: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Language',
         required: true,
-        default: 'ua',
     },
-    words: [{ type: Schema.Types.ObjectId, ref: 'Word' }],
+    words: [{ type: Schema.Types.ObjectId, ref: 'WordTranslateSchema' }],
 }, {
     timestamps: true
 });

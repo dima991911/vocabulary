@@ -32,6 +32,12 @@ mongoose.set('useCreateIndex', true);
 // Models for db
 require('./models/User');
 require('./models/Word');
+require('./models/Language');
+require('./models/WordTranslate');
+
+if (process.env.SEED) {
+  require('./seeder/index')();
+}
 
 app.use(require('./routes'));
 
