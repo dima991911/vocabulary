@@ -13,5 +13,10 @@
 }
 
 .content-section-wrapper {
+    min-height: 100%;
     background: #fff;
+}
+
+.page-wrapper {
+    min-height: 100%;
 }

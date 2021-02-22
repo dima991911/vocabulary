@@ -6,7 +6,6 @@ export const Home: FC<PropsType> = ({ title }) => {
     return (
         <div>
             <h2>{title || 'Home'}</h2>
-            Menu
         </div>
     )
 }
