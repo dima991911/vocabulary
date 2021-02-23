@@ -5,6 +5,10 @@ const config = require('../config');
 
 const { Schema } = mongoose;
 
+/*TODO:
+* Change words property
+* Have to be successTranslateCount, note etc(think better about future logic)
+* */
 const UserSchema = new Schema({
     login: {
         type: String,
@@ -31,7 +35,7 @@ const UserSchema = new Schema({
         ref: 'Language',
         required: true,
     },
-    words: [{ type: Schema.Types.ObjectId, ref: 'WordTranslateSchema' }],
+    words: [{ type: Schema.Types.ObjectId, ref: 'WordTranslate' }],
 }, {
     timestamps: true
 });

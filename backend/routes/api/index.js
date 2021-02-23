@@ -12,6 +12,6 @@ router.post('/registration', userController.registration);
 router.post('/word', isAuth, wordController.createWord);
 router.get('/words', isAuth, wordController.getWords);
 router.put('/word/:id', isAuth, wordController.editWord);
-router.delete('/word/:id', isAuth, wordController.deleteWord);
+router.delete('/word/:id', isAuth, wordController.deleteTranslate);
 
 module.exports = router;
