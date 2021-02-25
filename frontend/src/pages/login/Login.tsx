@@ -12,7 +12,7 @@ type FromValuesType = {
     password: string
 }
 
-export const Login: React.FC<PropsType> = () => {
+const Login: React.FC<PropsType> = () => {
     const onLogin = (values: FromValuesType): void => {
         console.log(values);
     };
@@ -57,3 +57,5 @@ export const Login: React.FC<PropsType> = () => {
         </div>
     )
 }
+
+export default Login;

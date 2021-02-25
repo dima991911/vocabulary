@@ -35,8 +35,10 @@ module.exports.registration = async (req, res) => {
         return;
     }
 
-    const createdUser = await User.create({ login, password, email, nativeLanguage, phone });
+    let createdUser = await User.create({ login, password, email, nativeLanguage, phone });
+    createdUser = await User.findById(createdUser._id, '-password -words').populate({ path: 'nativeLanguage' });
+
     const token = createdUser.getJwtToken();
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, user: createdUser });
 };

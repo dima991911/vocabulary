@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
@@ -12,7 +12,7 @@ import { store } from "./store";
 
 const { Content, Footer, Header, Sider } = Layout;
 
-function App() {
+const App: FC = () => {
     return (
         <Provider store={store}>
             <Router>
