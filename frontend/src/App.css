@@ -1,0 +1,32 @@
+@import '~antd/dist/antd.css';
+
+.site-layout-background {
+    background-color: #fff;
+}
+
+.main-section {
+    min-height: 100vh;
+}
+
+.content-section {
+    margin: 30px;
+}
+
+.content-section-wrapper {
+    min-height: 100%;
+    background: #fff;
+}
+
+.page-wrapper {
+    min-height: 100%;
+}
+
+.centered-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-height {
+    height: 100%;
+}

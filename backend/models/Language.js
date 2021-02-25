@@ -2,16 +2,19 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const UsersSchema = new Schema({
-    login: {
+const LanguageSchema = new Schema({
+    name: {
         type: String,
         required: true,
         unique: true,
     },
-    password: {
+    code: {
         type: String,
         required: true,
+        unique: true,
     }
+}, {
+    timestamps: true
 });
 
-mongoose.model('Users', UsersSchema);
+mongoose.model('Language', LanguageSchema);

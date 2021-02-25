@@ -10,8 +10,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const app = express();
 
-app.use(cors());
 app.use(require('morgan')('dev'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -30,7 +30,14 @@ mongoose.set('debug', true);
 mongoose.set('useCreateIndex', true);
 
 // Models for db
-require('./models/Users');
+require('./models/User');
+require('./models/Word');
+require('./models/Language');
+require('./models/WordTranslate');
+
+if (process.env.SEED) {
+  require('./seeder/index')();
+}
 
 app.use(require('./routes'));
 

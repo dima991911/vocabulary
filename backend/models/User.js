@@ -1,0 +1,57 @@
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
+
+const { Schema } = mongoose;
+
+/*TODO:
+* Change words property
+* Have to be successTranslateCount, note etc(think better about future logic)
+* */
+const UserSchema = new Schema({
+    login: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    phone: {
+        type: String,
+        unique: true,
+        index: true,
+        sparse: true,
+    },
+    nativeLanguage: {
+        type: Schema.Types.ObjectId,
+        ref: 'Language',
+        required: true,
+    },
+    words: [{ type: Schema.Types.ObjectId, ref: 'WordTranslate' }],
+}, {
+    timestamps: true
+});
+
+UserSchema.methods.generateJWT = function () {
+    const expirationDate = new Date().getTime();
+
+    return jwt.sign({
+        login: this.login,
+        _id: this._id,
+        exp: expirationDate,
+    }, config.jwt.secret);
+};
+
+UserSchema.methods.getJwtToken = function () {
+    return this.generateJWT();
+};
+
+mongoose.model('User', UserSchema);
