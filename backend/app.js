@@ -33,7 +33,7 @@ mongoose.set('useCreateIndex', true);
 require('./models/User');
 require('./models/Word');
 require('./models/Language');
-require('./models/WordTranslate');
+require('./models/Theme');
 
 if (process.env.SEED) {
   require('./seeder/index')();
