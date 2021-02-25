@@ -114,7 +114,7 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
     return {
         languages: app.languages,
         user: user.currentUser,
-        signupStatus: user.signupStatuses,
+        signupStatus: user.signupStatus,
         signUpErrorMessage: user.signUpErrorMessage,
     }
 };

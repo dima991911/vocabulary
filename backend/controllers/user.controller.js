@@ -5,15 +5,16 @@ const User = mongoose.model('User');
 
 module.exports.login = async (req, res) => {
     const { loginOrEmail, password } = req.body;
-    const user = await User.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }], password });
+    let user = await User.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }], password });
 
     if (!user) {
         res.status(404).send({ error: 'User not found' });
         return;
     }
 
+    user = await User.findById(user._id, '-password -words').populate({ path: 'nativeLanguage' });
     const token = user.getJwtToken();
-    res.status(200).json({ token });
+    res.status(200).json({ token, user });
 };
 
 module.exports.registration = async (req, res) => {
