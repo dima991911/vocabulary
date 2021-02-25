@@ -1,20 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Form, Input, Button } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
+import {Alert, Button, Form, Input} from "antd";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+
+import {login} from "../../store/user/user.actions";
 
 import "./Login.css";
 
-import { PropsType } from "../../types/page";
+import {AppStateType} from "../../store";
+import {PropsType as PagePropsType} from "../../types/page";
+import {RequestStatusesEnum} from "../../types/types";
+
+type MapStateToProps = {
+    loginStatus: RequestStatusesEnum | null
+    loginErrorMessage: string | null
+}
+
+type MapDispatchToProps = {
+    login: (loginOrEmail: string, password: string) => void
+}
 
 type FromValuesType = {
     loginOrEmail: string
     password: string
 }
 
-export const Login: React.FC<PropsType> = () => {
+type PropsType = PagePropsType & MapStateToProps & MapDispatchToProps;
+
+const Login: React.FC<PropsType> = ({ loginErrorMessage, loginStatus, login }) => {
     const onLogin = (values: FromValuesType): void => {
-        console.log(values);
+        login(values.loginOrEmail, values.password);
     };
 
     return (
@@ -42,18 +58,35 @@ export const Login: React.FC<PropsType> = () => {
                     />
                 </Form.Item>
                 <Form.Item>
-                    <a className="login-form-forgot" href="">
+                    <a className="login-form-forgot" href="#">
                         Forgot password
                     </a>
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="login-form-button"
+                        loading={loginStatus === RequestStatusesEnum.Pending}
+                    >
                         Log in
                     </Button>
                     Or <Link to="/signup">register now!</Link>
                 </Form.Item>
+                {loginErrorMessage && <Alert message={loginErrorMessage} type="error" />}
             </Form>
         </div>
     )
 }
+
+const mapStateToProps = (state: AppStateType): MapStateToProps => {
+    const { user } = state;
+
+    return {
+        loginStatus: user.loginStatus,
+        loginErrorMessage: user.loginErrorMessage
+    }
+}
+
+export default connect(mapStateToProps, { login })(Login);

@@ -1,16 +1,16 @@
-import { WordInitialStateType, IWord } from "../../types/types";
+import { IWord } from "../../types/types";
 import { ADD_WORD, DELETE_WORD, ActionsTypes } from "./words.actions";
 
-const initialState: WordInitialStateType = {
+const initialState = {
     words: [
         { id: 1, word: 'do', translate: 'робити' },
         { id: 2, word: 'create', translate: 'створювати' },
     ] as Array<IWord>,
 };
 
-type InitialState = typeof initialState;
+type InitialStateType = typeof initialState;
 
-export const wordReducer = (state = initialState, action: ActionsTypes): InitialState => {
+export const wordReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case ADD_WORD:
             return {
