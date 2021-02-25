@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { Word, WordTranslate, User, Language } = mongoose.models;
+const { Word, Theme, User, Language } = mongoose.models;
 
 const languages = [
     { name: 'Ukrainian', code: 'ua' },
@@ -17,22 +17,23 @@ module.exports = seed = async () => {
 
     const createdUsers = await User.insertMany(users);
 
+    const theme = { name: 'Main', creator: createdUsers[0]._id, words: [] }
+
+
+    const createdTheme = await Theme.create(theme);
+
     const words = [
-        { word: 'робити', language: createdLanguages[0]._id },
-        { word: 'do', language: createdLanguages[1]._id },
-        { word: 'створювати', language: createdLanguages[0]._id },
-        { word: 'create', language: createdLanguages[1]._id },
+        { word: 'do', translate: 'робити', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id },
+        { word: 'create', translate: 'створювати', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id },
+        { word: 'draw', translate: 'малювати', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id, theme: createdTheme._id },
+        { word: 'some', translate: 'хтось', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id, theme: createdTheme._id },
     ];
 
     const createdWords = await Word.insertMany(words);
 
-    const translate = [
-        { word: createdWords[0]._id, translate: createdWords[1]._id, users: [createdUsers[0]._id] },
-        { word: createdWords[2]._id, translate: createdWords[3]._id, users: [createdUsers[0]._id] },
-    ];
-
-    const createdTranslate = await WordTranslate.insertMany(translate);
-
-    createdUsers[0].words = createdTranslate.map(ct => ct._id);
+    createdUsers[0].words = createdWords.map(w => w._id);
     await createdUsers[0].save();
+
+    createdTheme.words = createdWords.filter(w => w.theme).map(w => w._id);
+    await createdTheme.save();
 }

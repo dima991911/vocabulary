@@ -35,7 +35,7 @@ const UserSchema = new Schema({
         ref: 'Language',
         required: true,
     },
-    words: [{ type: Schema.Types.ObjectId, ref: 'WordTranslate' }],
+    words: [{ type: Schema.Types.ObjectId, ref: 'Word' }],
 }, {
     timestamps: true
 });
