@@ -43,3 +43,10 @@ module.exports.registration = async (req, res) => {
 
     res.status(200).json({ token, user: createdUser });
 };
+
+module.exports.auth = async (req, res) => {
+    const { currentUser } = req;
+
+    const user = await User.findById(currentUser._id, '-password -words').populate({ path: 'nativeLanguage' });
+    res.status(200).json({ user });
+};

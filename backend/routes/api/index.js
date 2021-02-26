@@ -9,6 +9,7 @@ const languageController = require('../../controllers/language.controller');
 
 router.post('/login', userController.login);
 router.post('/signup', userController.registration);
+router.get('/auth', isAuth, userController.auth);
 
 router.post('/word', isAuth, wordController.createWord);
 router.get('/words', isAuth, wordController.getWords);

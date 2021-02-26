@@ -1,18 +1,20 @@
 import React from "react";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
-import {Alert, Button, Form, Input} from "antd";
-import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import { Alert, Button, Form, Input } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
-import {login} from "../../store/user/user.actions";
+import { login } from "../../store/user/user.actions";
 
 import "./Login.css";
 
-import {AppStateType} from "../../store";
-import {PropsType as PagePropsType} from "../../types/page";
-import {RequestStatusesEnum} from "../../types/types";
+import { AppStateType } from "../../store";
+import { PropsType as PagePropsType } from "../../types/page";
+import { IUserType, RequestStatusesEnum } from "../../types/types";
+import Route from "../../constants/Route";
 
 type MapStateToProps = {
+    currentUser: IUserType | null
     loginStatus: RequestStatusesEnum | null
     loginErrorMessage: string | null
 }
@@ -28,10 +30,14 @@ type FromValuesType = {
 
 type PropsType = PagePropsType & MapStateToProps & MapDispatchToProps;
 
-const Login: React.FC<PropsType> = ({ loginErrorMessage, loginStatus, login }) => {
+const Login: React.FC<PropsType> = ({ loginErrorMessage, loginStatus, login, currentUser }) => {
     const onLogin = (values: FromValuesType): void => {
         login(values.loginOrEmail, values.password);
     };
+
+    if (currentUser) {
+        return <Redirect to={Route.Dashboard} />
+    }
 
     return (
         <div className="centered-flex full-height">
@@ -84,9 +90,10 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
     const { user } = state;
 
     return {
+        currentUser: user.currentUser,
         loginStatus: user.loginStatus,
         loginErrorMessage: user.loginErrorMessage
     }
 }
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect<MapStateToProps, MapDispatchToProps, PagePropsType, AppStateType>(mapStateToProps, { login })(Login);

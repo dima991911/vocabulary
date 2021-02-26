@@ -5,8 +5,10 @@ import { Layout } from "antd";
 
 import './App.css';
 
-import { Home, Login, SignUp } from "./pages";
-import { HeaderMenuComponent } from "./components";
+import RoutePaths from "./constants/Route";
+
+import { Dashboard, Login, SignUp } from "./pages";
+import { HeaderMenuComponent, GuardRoute } from "./components";
 
 import { store } from "./store";
 
@@ -27,9 +29,9 @@ const App: FC = () => {
                         <Layout className="content-section">
                             <Content className="site-layout-background">
                                 <Switch>
-                                    <Route path="/" exact component={Home} />
-                                    <Route path="/login" exact component={Login} />
-                                    <Route path="/signup" exact component={SignUp} />
+                                    <Route path={RoutePaths.Dashboard} exact component={Dashboard} />
+                                    <Route path={RoutePaths.Login} exact component={Login} />
+                                    <Route path={RoutePaths.SignUp} exact component={SignUp} />
                                 </Switch>
                             </Content>
                         </Layout>

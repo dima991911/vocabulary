@@ -5,7 +5,7 @@ const isAuth = (req, res, next) => {
 
     const currentUser = decodeToken(token);
     if (!token || !currentUser) {
-        res.status(401).send({ message: 'You dont auth' });
+        res.status(401).json({ message: 'You dont auth' });
     } else {
         req.currentUser = currentUser;
         next();

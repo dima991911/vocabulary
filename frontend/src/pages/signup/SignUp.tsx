@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { FC } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Button, Form, Input, Select, Alert } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
@@ -12,10 +12,12 @@ import { PropsType as PagePropsType } from "../../types/page";
 import { AppStateType } from "../../store";
 
 import "./SignUp.css";
+import Route from "../../constants/Route";
 
 const { Option } = Select;
 
 type MapStateToProps = {
+    currentUser: IUserType | null
     languages: Array<ILanguageType>
     user: IUserType | null
     signupStatus: RequestStatusesEnum | null
@@ -36,15 +38,14 @@ type SignUpValuesType = {
 }
 
 const SignUp: FC<PropsType> = ({ languages, signup,
-                                   user, signupStatus, signUpErrorMessage }) => {
+                                   user, signupStatus, signUpErrorMessage, currentUser }) => {
     const onSignup = ({ login, password, email, nativeLanguage }: SignUpValuesType): void => {
         signup(login, password, email, nativeLanguage);
     };
 
-    useEffect(() => {
-        console.log(user);
-        console.log(signupStatus);
-    }, [user, signupStatus]);
+    if (currentUser) {
+        return <Redirect to={Route.Dashboard} />
+    }
 
     return (
         <div className="centered-flex full-height">
@@ -112,6 +113,7 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
     const { app, user } = state;
 
     return {
+        currentUser: user.currentUser,
         languages: app.languages,
         user: user.currentUser,
         signupStatus: user.signupStatus,
