@@ -112,7 +112,6 @@ export const auth = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> =
 
 export const logout = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return (dispatch) => {
-        debugger;
         dispatch(setUser(null));
         localStorage.removeItem('token');
     }
