@@ -1,8 +1,8 @@
-import {ThunkAction} from "redux-thunk";
+import { ThunkAction } from "redux-thunk";
 
-import {IUserType, RequestStatusesEnum} from "../../types/types";
-import {AppStateType} from "../index";
-import {authAPI} from "../../api";
+import { IUserType, RequestStatusesEnum } from "../../types/types";
+import { AppStateType } from "../index";
+import { authAPI } from "../../api";
 
 export const SET_USER = '[USER] SET_USER';
 export const SET_SIGNUP_STATUS = '[USER] SET_SIGNUP_STATUS';
@@ -10,12 +10,21 @@ export const SET_SIGNUP_ERROR_MESSAGE = '[USER] SET_SIGNUP_ERROR_MESSAGE_STATUS'
 export const SET_LOGIN_STATUS = '[USER] SET_LOGIN_STATUS';
 export const SET_LOGIN_ERROR_MESSAGE = '[USER] SET_LOGIN_ERROR_MESSAGE';
 
-type SetUserActionType = {
-    type: typeof SET_USER
-    user: IUserType
+/*
+* TODO types thunk dispatch
+* */
+export const init = () => {
+    return (dispatch: any) => {
+        dispatch(auth());
+    };
 }
 
-export const setUser = (user: IUserType): SetUserActionType => ({ type: SET_USER, user });
+type SetUserActionType = {
+    type: typeof SET_USER
+    user: IUserType | null
+}
+
+export const setUser = (user: IUserType | null): SetUserActionType => ({ type: SET_USER, user });
 
 type SignUpStatusActionType = {
     type: typeof SET_SIGNUP_STATUS
@@ -52,7 +61,7 @@ export const setLoginErrorMessage = (message: string | null): SetLoginErrorMessa
 type SignUpActionType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
 
 export const signup = (login: string, password: string, email: string, nativeLanguage: string): SignUpActionType => {
-    return async (dispatch) => {
+    return async (dispatch ) => {
         try {
             dispatch(setSignUpStatus(RequestStatusesEnum.Pending));
 
@@ -84,6 +93,28 @@ export const login = (loginOrEmail: string, password: string): SignUpActionType 
             dispatch(setLoginStatus(RequestStatusesEnum.Failure));
             dispatch(setLoginErrorMessage(e.response?.data.error));
         }
+    }
+}
+
+export const auth = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
+    return async dispatch => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const userData = await authAPI.auth(token);
+                dispatch(setUser(userData.user));
+            }
+        } catch (e) {
+            dispatch(logout());
+        }
+    }
+}
+
+export const logout = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
+    return (dispatch) => {
+        debugger;
+        dispatch(setUser(null));
+        localStorage.removeItem('token');
     }
 }
 

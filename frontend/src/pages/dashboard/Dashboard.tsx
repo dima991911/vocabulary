@@ -2,12 +2,12 @@ import React, { FC } from "react";
 
 import { PropsType } from "../../types/page";
 
-const Home: FC<PropsType> = ({ title }) => {
+const Dashboard: FC<PropsType> = ({ title }) => {
     return (
         <div>
-            <h2>{title || 'Home'}</h2>
+            <h2>{title || 'Dashboard'}</h2>
         </div>
     )
 }
 
-export default Home;
+export default Dashboard;

@@ -24,3 +24,4 @@ export const store = createStore(rootReducer, applyMiddleware(thunk as ThunkMidd
 export { appActions, userActions };
 
 store.dispatch(appActions.fetchLanguages());
+store.dispatch(userActions.init());

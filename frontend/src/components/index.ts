@@ -1,1 +1,4 @@
-export { HeaderMenuComponent } from "./header/Header";
+import GuardRoute from './GuardRoute/GuardRoute';
+import HeaderMenuComponent from "./header/Header";
+
+export { GuardRoute, HeaderMenuComponent };
