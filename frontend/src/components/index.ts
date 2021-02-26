@@ -1,4 +1,5 @@
 import GuardRoute from './GuardRoute/GuardRoute';
-import HeaderMenuComponent from "./header/Header";
+import HeaderMenuComponent from "./Header/Header";
+import LeftSidebar from "./LeftSidebar/LeftSidebar";
 
-export { GuardRoute, HeaderMenuComponent };
+export { GuardRoute, HeaderMenuComponent, LeftSidebar };

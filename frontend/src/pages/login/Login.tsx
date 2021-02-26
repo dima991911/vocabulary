@@ -13,7 +13,7 @@ import { PropsType as PagePropsType } from "../../types/page";
 import { IUserType, RequestStatusesEnum } from "../../types/types";
 import Route from "../../constants/Route";
 
-type MapStateToProps = {
+type MapStateToPropsType = {
     currentUser: IUserType | null
     loginStatus: RequestStatusesEnum | null
     loginErrorMessage: string | null
@@ -28,7 +28,7 @@ type FromValuesType = {
     password: string
 }
 
-type PropsType = PagePropsType & MapStateToProps & MapDispatchToProps;
+type PropsType = PagePropsType & MapStateToPropsType & MapDispatchToProps;
 
 const Login: React.FC<PropsType> = ({ loginErrorMessage, loginStatus, login, currentUser }) => {
     const onLogin = (values: FromValuesType): void => {
@@ -86,7 +86,7 @@ const Login: React.FC<PropsType> = ({ loginErrorMessage, loginStatus, login, cur
     )
 }
 
-const mapStateToProps = (state: AppStateType): MapStateToProps => {
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     const { user } = state;
 
     return {
@@ -96,4 +96,4 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
     }
 }
 
-export default connect<MapStateToProps, MapDispatchToProps, PagePropsType, AppStateType>(mapStateToProps, { login })(Login);
+export default connect<MapStateToPropsType, MapDispatchToProps, PagePropsType, AppStateType>(mapStateToProps, { login })(Login);

@@ -16,7 +16,7 @@ import Route from "../../constants/Route";
 
 const { Option } = Select;
 
-type MapStateToProps = {
+type MapStateToPropsType = {
     currentUser: IUserType | null
     languages: Array<ILanguageType>
     user: IUserType | null
@@ -28,7 +28,7 @@ type MapDispatchToProps = {
     signup: (login: string, password: string, email: string, nativeLanguage: string) => void
 }
 
-type PropsType = PagePropsType & MapStateToProps & MapDispatchToProps;
+type PropsType = PagePropsType & MapStateToPropsType & MapDispatchToProps;
 
 type SignUpValuesType = {
     login: string
@@ -109,7 +109,7 @@ const SignUp: FC<PropsType> = ({ languages, signup,
     )
 }
 
-const mapStateToProps = (state: AppStateType): MapStateToProps => {
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     const { app, user } = state;
 
     return {
@@ -121,7 +121,7 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
     }
 };
 
-export default connect<MapStateToProps, MapDispatchToProps, PagePropsType, AppStateType>(
+export default connect<MapStateToPropsType, MapDispatchToProps, PagePropsType, AppStateType>(
     mapStateToProps,
     { signup }
     )(SignUp);

@@ -2,5 +2,8 @@ export default {
     Dashboard: '/',
     Login: '/login',
     SignUp: '/signup',
-    Logout: '/logout',
+    Settings: '/settings',
+    Classes: '/classes',
+    Vocabulary: '/vocabulary',
+    Tests: '/tests',
 }
