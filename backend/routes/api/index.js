@@ -13,8 +13,9 @@ router.get('/auth', isAuth, userController.auth);
 
 router.post('/word', isAuth, wordController.createWord);
 router.get('/words', isAuth, wordController.getWords);
+router.get('/themes', isAuth, wordController.getThemes);
 router.put('/word/:id', isAuth, wordController.editWord);
-router.delete('/word/:id', isAuth, wordController.deleteTranslate);
+router.delete('/word/:id', isAuth, wordController.deleteWord);
 
 router.get('/languages', languageController.getLanguage);
 

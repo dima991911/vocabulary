@@ -1,5 +1,9 @@
 @import '~antd/dist/antd.css';
 
+body {
+    color: rgba(0, 0, 0, 0.85);
+}
+
 .site-layout-background {
     background-color: #fff;
 }

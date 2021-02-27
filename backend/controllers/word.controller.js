@@ -31,8 +31,7 @@ module.exports.createWord = async (req, res) => {
         return;
     }
 
-    let createdWord = await Word.create({ word, translate, wordLanguage, translateLanguage, creator: user._id });
-    createdWord = await Word.populate(createdWord, [{ path: 'wordLanguage' }, { path: 'translateLanguage' }]);
+    const createdWord = await Word.create({ word, translate, wordLanguage, translateLanguage, creator: user._id });
     user.words.push(createdWord._id);
     await user.save();
 
@@ -41,14 +40,19 @@ module.exports.createWord = async (req, res) => {
 
 module.exports.getWords = async (req, res) => {
     const { currentUser } = req;
-    // TODO: get count instead users ids
-    const user = await User.findById(currentUser._id)
-        .populate({
-            path: 'words',
-            options: { sort: { 'createdAt': -1 } },
-        });
 
-    res.status(200).json({ user });
+    await new Promise(r => setTimeout(r, 5000));
+    const words = await Word.find({ creator: currentUser._id });
+
+    res.status(200).json({ words });
+};
+
+module.exports.getThemes = async (req, res) => {
+    const { currentUser } = req;
+
+    const themes = await Theme.find({ creator: currentUser._id });
+
+    res.status(200).json({ themes });
 };
 
 // TODO: create logic
@@ -59,7 +63,7 @@ module.exports.editWord = async (req, res) => {
     res.status(200).json({ message: 'Have not implemented yet' });
 };
 
-module.exports.deleteTranslate = async (req, res) => {
+module.exports.deleteWord = async (req, res) => {
     const { id: wordId } = req.params;
     const user = await User.findById(req.currentUser._id);
     const foundWord = await Word.findById(wordId);
@@ -79,6 +83,8 @@ module.exports.deleteTranslate = async (req, res) => {
     }
 
     await foundWord.delete();
+    user.words = user.words.filter(wId => !wId.equals(wordId));
+    await user.save();
     res.status(200).json({ wordId });
 };
 

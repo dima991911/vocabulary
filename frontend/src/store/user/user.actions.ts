@@ -69,8 +69,8 @@ export const signup = (login: string, password: string, email: string, nativeLan
             dispatch(setSignUpStatus(RequestStatusesEnum.Pending));
 
             const userData = await authAPI.signup(login, password, email, nativeLanguage);
-            dispatch(setUser(userData.user));
             localStorage.setItem('token', userData.token);
+            dispatch(setUser(userData.user));
 
             dispatch(setSignUpStatus(RequestStatusesEnum.Success));
             dispatch(setSignUpErrorMessage(null));
@@ -87,8 +87,8 @@ export const login = (loginOrEmail: string, password: string): SignUpActionType 
             dispatch(setLoginStatus(RequestStatusesEnum.Pending));
 
             const userData = await authAPI.login(loginOrEmail, password);
-            dispatch(setUser(userData.user));
             localStorage.setItem('token', userData.token);
+            dispatch(setUser(userData.user));
 
             dispatch(setLoginStatus(RequestStatusesEnum.Success));
             dispatch(setLoginErrorMessage(null));
