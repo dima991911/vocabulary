@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 
 import './App.css';
 
 import RoutePaths from "./constants/Route";
 
-import { Classes, Dashboard, Login, Settings, SignUp, Tests, Vocabulary } from "./pages";
-import { HeaderMenuComponent, LeftSidebar, GuardRoute } from "./components";
+import { Dashboard, Login, SignUp } from "./pages";
+import { HeaderMenuComponent, LeftSidebar, GuardRoute, Loading } from "./components";
 
 import { store } from "./store";
 
@@ -35,7 +35,7 @@ const App: FC = () => {
                                     <Route exact path={RoutePaths.SignUp} component={SignUp} />
                                     <Route path={RoutePaths.Dashboard} component={Dashboard} />
                                     <Route render={() => (
-                                        <div>not found</div>
+                                        <div>Not found</div>
                                     )} />
                                 </Switch>
                             </Content>
@@ -43,6 +43,8 @@ const App: FC = () => {
                         <Footer>Footer</Footer>
                     </Layout>
                 </Layout>
+
+                <Loading  />
             </Router>
         </Provider>
     );
