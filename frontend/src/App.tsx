@@ -8,7 +8,7 @@ import './App.css';
 import RoutePaths from "./constants/Route";
 
 import { Dashboard, Login, SignUp } from "./pages";
-import { HeaderMenuComponent, GuardRoute } from "./components";
+import { HeaderMenuComponent, LeftSidebar, GuardRoute, Loading } from "./components";
 
 import { store } from "./store";
 
@@ -19,7 +19,9 @@ const App: FC = () => {
         <Provider store={store}>
             <Router>
                 <Layout>
-                    <Sider>Left sidebar</Sider>
+                    <Sider>
+                        <LeftSidebar />
+                    </Sider>
 
                     <Layout className="main-section">
                         <Header className="site-layout-background">
@@ -29,15 +31,20 @@ const App: FC = () => {
                         <Layout className="content-section">
                             <Content className="site-layout-background">
                                 <Switch>
-                                    <Route path={RoutePaths.Dashboard} exact component={Dashboard} />
-                                    <Route path={RoutePaths.Login} exact component={Login} />
-                                    <Route path={RoutePaths.SignUp} exact component={SignUp} />
+                                    <Route exact path={RoutePaths.Login} component={Login} />
+                                    <Route exact path={RoutePaths.SignUp} component={SignUp} />
+                                    <Route path={RoutePaths.Dashboard} component={Dashboard} />
+                                    <Route render={() => (
+                                        <div>Not found</div>
+                                    )} />
                                 </Switch>
                             </Content>
                         </Layout>
                         <Footer>Footer</Footer>
                     </Layout>
                 </Layout>
+
+                <Loading  />
             </Router>
         </Provider>
     );

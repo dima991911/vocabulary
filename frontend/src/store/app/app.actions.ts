@@ -7,7 +7,7 @@ import { languagesAPI } from "../../api";
 export const SET_LANGUAGES = "SET_LANGUAGES";
 export const SET_GLOBAL_LOADING = "SET_GLOBAL_LOADING";
 
-type SetGlobalLoadingActionType = {
+export type SetGlobalLoadingActionType = {
     type: typeof SET_GLOBAL_LOADING
     isLoading: boolean
 }

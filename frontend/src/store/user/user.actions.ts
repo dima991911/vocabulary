@@ -3,6 +3,9 @@ import { ThunkAction } from "redux-thunk";
 import { IUserType, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../index";
 import { authAPI } from "../../api";
+import { setGlobalLoading } from "../app/app.actions";
+
+import { SetGlobalLoadingActionType } from '../app/app.actions';
 
 export const SET_USER = '[USER] SET_USER';
 export const SET_SIGNUP_STATUS = '[USER] SET_SIGNUP_STATUS';
@@ -96,13 +99,16 @@ export const login = (loginOrEmail: string, password: string): SignUpActionType 
     }
 }
 
-export const auth = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
+type AuthTypes = ActionsTypes | SetGlobalLoadingActionType;
+export const auth = (): ThunkAction<void, AppStateType, unknown, AuthTypes> => {
     return async dispatch => {
         try {
             const token = localStorage.getItem('token');
             if (token) {
+                dispatch(setGlobalLoading(true));
                 const userData = await authAPI.auth(token);
                 dispatch(setUser(userData.user));
+                dispatch(setGlobalLoading(false));
             }
         } catch (e) {
             dispatch(logout());
@@ -112,7 +118,6 @@ export const auth = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> =
 
 export const logout = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return (dispatch) => {
-        debugger;
         dispatch(setUser(null));
         localStorage.removeItem('token');
     }

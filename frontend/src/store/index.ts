@@ -11,12 +11,13 @@ import { appReducer } from "./app/app.reducer";
 import { userReducer } from "./user/user.reducer";
 
 const rootReducer = combineReducers({
-    app: appReducer,
     word: wordReducer,
+    app: appReducer,
     user: userReducer,
 });
 
 type RootReducerType = typeof rootReducer;
+
 export type AppStateType = ReturnType<RootReducerType>
 
 export const store = createStore(rootReducer, applyMiddleware(thunk as ThunkMiddleware<AppStateType, any>));
@@ -25,3 +26,4 @@ export { appActions, userActions };
 
 store.dispatch(appActions.fetchLanguages());
 store.dispatch(userActions.init());
+
