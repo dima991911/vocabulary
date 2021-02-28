@@ -1,0 +1,17 @@
+.dropdown-wrapper {
+    padding: 4px;
+    cursor: pointer;
+}
+
+.actions-container {
+    min-width: 100px;
+    padding: 5px 0;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 15px 0 rgba(0,0,0,0.1);
+}
+
+.actions-container-item {
+    display: block;
+    width: 100%;
+}

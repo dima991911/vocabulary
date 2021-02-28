@@ -2,7 +2,6 @@
     flex: 1;
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 .word-item-info {
@@ -10,20 +9,16 @@
 }
 
 .word-item-info-original {
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.word-item-info-item {
-    font-size: 14px;
-    padding: 5px 0;
-}
-
-.hide-translate {
-    font-style: italic;
-    opacity: .8;
-    cursor: pointer;
+    font-size: 26px;
 }
 
 .word-item-info img {
     margin-right: 15px;
+}
+
+.actions-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
 }

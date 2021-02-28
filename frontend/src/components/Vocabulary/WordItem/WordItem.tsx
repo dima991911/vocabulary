@@ -1,8 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { useSelector } from "react-redux";
-import { Button } from "antd";
+import { Tag } from "antd";
 
 import { ILanguageType, IWord } from "../../../types/types";
+
+import { DropdownActions, TranslateItem, RateComponent } from '../../index';
 
 import './WordItem.css';
 import { AppStateType } from "../../../store";
@@ -13,39 +15,55 @@ type PropsType = {
 }
 
 const WordItem: FC<PropsType> = ({ word, showTranslate }) => {
-    const [isShowTranslate, setIsShowTranslate] = useState<boolean>(showTranslate);
     const wordLanguage = useSelector<AppStateType, ILanguageType | undefined>(state => state.app.languages.find(l => l._id === word.wordLanguage));
     const translateLanguage = useSelector<AppStateType, ILanguageType | undefined>(state => state.app.languages.find(l => l._id === word.translateLanguage));
 
-    useEffect(() => {
-        setIsShowTranslate(showTranslate);
-    }, [showTranslate])
+    const onEdit = () => {
+        console.log('edit');
+    }
 
-    const onShowTranslate = () => {
-        setIsShowTranslate(!isShowTranslate);
+    const onDelete = () => {
+        console.log('delete');
+    }
+
+    const onChangeRate = (value: number) => {
+        console.log(value);
     };
+
+    const actions = [
+        { title: 'Edit', onClick: onEdit },
+        { title: 'Delete', onClick: onDelete, danger: true },
+    ]
 
     return (
         <div className="word-item-container">
             <div className="word-item-info">
-                <div className="word-item-info-item word-item-info-original">
-                    <img src={`https://www.countryflags.io/${wordLanguage?.code}/flat/24.png`} />
-                    {word.word}
+                <TranslateItem text={word.word} flagCode={wordLanguage?.code} />
+                <TranslateItem
+                    text={word.translate}
+                    flagCode={translateLanguage?.code}
+                    canBeHide={true}
+                    isShowing={showTranslate}
+                />
+            </div>
+
+
+            <div className="actions-wrapper">
+                <div className="flex-row flex-align-end">
+                    <RateComponent value={2} onChange={onChangeRate} />
+
+                    <div className="word-item-actions">
+                        <DropdownActions actions={actions} />
+                    </div>
                 </div>
 
-                <div className="word-item-info-item">
-                    <img src={`https://www.countryflags.io/${translateLanguage?.code}/flat/24.png`} />
-                    {
-                        isShowTranslate ?
-                            <span>{word.translate}</span> :
-                            <span className="hide-translate" onClick={onShowTranslate}>Click that show translate</span>
-                    }
+                <div>
+                    <Tag color="purple">blue</Tag>
+                    <Tag color="purple">geekblue</Tag>
+                    <Tag color="purple">purple</Tag>
                 </div>
             </div>
-            <div className="word-item-actions">
-                <Button type="primary">Edit</Button>
-                <Button type="primary" danger>Delete</Button>
-            </div>
+
         </div>
     )
 };
