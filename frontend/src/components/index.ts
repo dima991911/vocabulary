@@ -7,6 +7,7 @@ import WordItem from "./Vocabulary/WordItem/WordItem";
 import DropdownActions from "./Vocabulary/DropdownActions/DropdownActions";
 import TranslateItem from "./Vocabulary/TranslateItem/TranslateItem";
 import RateComponent from "./Rate/Rate";
+import CreateWordFormModal from "./Vocabulary/CreateWordFormModal/CreateWordFormModal";
 
 export { GuardRoute, HeaderMenuComponent, LeftSidebar, Loading,
-    SkeletonLoading, WordItem, DropdownActions, TranslateItem, RateComponent };
+    SkeletonLoading, WordItem, DropdownActions, TranslateItem, RateComponent, CreateWordFormModal };

@@ -2,6 +2,7 @@
     flex: 1;
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 }
 
 .word-item-info {
@@ -17,6 +18,7 @@
 }
 
 .actions-wrapper {
+    align-self: stretch;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

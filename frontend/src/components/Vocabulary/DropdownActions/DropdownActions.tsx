@@ -34,7 +34,7 @@ const DropdownActions: FC<PropsType> = ({ actions, icon }) => {
         )
     }
 
-    const renderIcon = () => icon ? icon : <MoreOutlined style={{ fontSize: 26 }} />
+    const renderIcon = () => icon ? icon : <MoreOutlined style={{ fontSize: 24 }} />
 
     return (
         <div className="word-item-actions">

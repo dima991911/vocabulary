@@ -27,7 +27,7 @@ module.exports.createWord = async (req, res) => {
     const findWord = await Word.findOne({ word, translate, wordLanguage, translateLanguage, creator: user._id });
 
     if (findWord) {
-        res.status(409).json({ error: 'Your have had already this word' });
+        res.status(409).json({ message: 'Your have had already this word' });
         return;
     }
 
@@ -41,7 +41,7 @@ module.exports.createWord = async (req, res) => {
 module.exports.getWords = async (req, res) => {
     const { currentUser } = req;
 
-    await new Promise(r => setTimeout(r, 5000));
+    await new Promise(r => setTimeout(r, 2500));
     const words = await Word.find({ creator: currentUser._id });
 
     res.status(200).json({ words });

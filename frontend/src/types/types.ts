@@ -1,13 +1,13 @@
 export interface IWord {
-    _id: number
+    _id?: number
     word: string
     translate: string
     wordLanguage: string
     translateLanguage: string
     theme?: string
-    creator: string
-    createdAt: Date
-    updatedAt: Date
+    creator?: string
+    createdAt?: Date
+    updatedAt?: Date
 }
 
 export type WordActionType = {
@@ -47,4 +47,11 @@ export interface IThemeType {
     createdAt: Date
     updatedAt: Date
     creator: string
+}
+
+export type CreateWordFormValuesType = {
+    word: string
+    translate: string
+    wordLanguage: string
+    translateLanguage: string
 }

@@ -4,11 +4,11 @@ import { IThemeType, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../index";
 import { wordAPI } from "../../api";
 
-export const ADD_THEME = 'ADD_THEME';
-export const DELETE_THEME = 'DELETE_THEME';
+export const ADD_THEME = '[THEME] ADD_THEME';
+export const DELETE_THEME = '[THEME] DELETE_THEME';
 
-export const SET_THEMES = 'SET_THEMES';
-export const SET_FETCH_THEMES_STATUS = 'SET_FETCH_THEMES_STATUS';
+export const SET_THEMES = '[THEME] SET_THEMES';
+export const SET_FETCH_THEMES_STATUS = '[THEME] SET_FETCH_THEMES_STATUS';
 
 type SetFetchThemesStatusActionType = {
     type: typeof SET_FETCH_THEMES_STATUS

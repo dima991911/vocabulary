@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from "react-redux";
-import { Tag } from "antd";
+import { Tag, List } from "antd";
 
 import { ILanguageType, IWord } from "../../../types/types";
 
@@ -36,7 +36,7 @@ const WordItem: FC<PropsType> = ({ word, showTranslate }) => {
     ]
 
     return (
-        <div className="word-item-container">
+        <List.Item className="word-item-container">
             <div className="word-item-info">
                 <TranslateItem text={word.word} flagCode={wordLanguage?.code} />
                 <TranslateItem
@@ -64,7 +64,7 @@ const WordItem: FC<PropsType> = ({ word, showTranslate }) => {
                 </div>
             </div>
 
-        </div>
+        </List.Item>
     )
 };
 

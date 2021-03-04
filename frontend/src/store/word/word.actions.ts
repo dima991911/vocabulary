@@ -1,15 +1,15 @@
 import { ThunkAction } from 'redux-thunk';
+import { message } from "antd";
 
 import { IWord, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../index";
 import { wordAPI } from "../../api";
 
-export const ADD_WORD = 'ADD_WORD';
-export const DELETE_WORD = 'DELETE_WORD';
+export const ADD_WORD_STATUS = '[WORD] ADD_WORD_STATUS';
+export const ADD_WORD_ERROR_MESSAGE = '[WORD] ADD_WORD_ERROR_MESSAGE';
 
-export const SET_WORDS = 'SET_WORDS';
-export const SET_FETCH_WORDS_STATUS = 'SET_FETCH_WORDS_STATUS';
-
+export const SET_WORDS = '[WORD] SET_WORDS';
+export const SET_FETCH_WORDS_STATUS = '[WORD] SET_FETCH_WORDS_STATUS';
 
 export type SetFetchWordStatusActionType = {
     type: typeof SET_FETCH_WORDS_STATUS
@@ -25,6 +25,42 @@ export type SetWordsActionType = {
 
 export const setWords = (words: Array<IWord>): SetWordsActionType => ({ type: SET_WORDS, words });
 
+export type SetAddWordStatusActionType = {
+    type: typeof ADD_WORD_STATUS
+    status: RequestStatusesEnum
+}
+
+export const setAddWordStatus = (status: RequestStatusesEnum): SetAddWordStatusActionType => ({ type: ADD_WORD_STATUS, status });
+
+export type SetAddWordErrorMessageType = {
+    type: typeof ADD_WORD_ERROR_MESSAGE
+    message: string | null
+}
+
+export const setAddWordErrorMessage = (message: string | null): SetAddWordErrorMessageType => ({ type: ADD_WORD_ERROR_MESSAGE, message });
+
+export const addWord = (word: IWord): ThunkAction<Promise<RequestStatusesEnum>, AppStateType, unknown, ActionsTypes> => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch(setAddWordStatus(RequestStatusesEnum.Pending));
+            const data = await wordAPI.addWord(word);
+
+            const words = getState().word.words;
+
+            dispatch(setWords([data.word, ...words]));
+            dispatch(setAddWordStatus(RequestStatusesEnum.Success));
+            dispatch(setAddWordErrorMessage(null));
+
+            message.success('Word added');
+            return RequestStatusesEnum.Success;
+        } catch (e) {
+            dispatch(setAddWordStatus(RequestStatusesEnum.Success));
+            dispatch(setAddWordErrorMessage(e.response.data.message));
+            message.error(e.response.data.message);
+            return RequestStatusesEnum.Failure;
+        }
+    }
+}
 
 export const fetchWords = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return async (dispatch) => {
@@ -39,9 +75,6 @@ export const fetchWords = (): ThunkAction<void, AppStateType, unknown, ActionsTy
         }
     }
 }
-
-
-
 
 // export type AddWordActionType = {
 //     type: typeof ADD_WORD
@@ -84,4 +117,4 @@ export const fetchWords = (): ThunkAction<void, AppStateType, unknown, ActionsTy
 //     }
 // }
 
-export type ActionsTypes = SetFetchWordStatusActionType | SetWordsActionType;
+export type ActionsTypes = SetAddWordStatusActionType | SetAddWordErrorMessageType | SetFetchWordStatusActionType | SetWordsActionType;
