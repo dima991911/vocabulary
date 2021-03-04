@@ -1,0 +1,26 @@
+.word-item-container {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.word-item-info {
+    flex: 1;
+}
+
+.word-item-info-original {
+    font-size: 26px;
+}
+
+.word-item-info img {
+    margin-right: 15px;
+}
+
+.actions-wrapper {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}

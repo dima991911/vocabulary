@@ -1,7 +1,13 @@
 export interface IWord {
-    id: number
+    _id?: number
     word: string
     translate: string
+    wordLanguage: string
+    translateLanguage: string
+    theme?: string
+    creator?: string
+    createdAt?: Date
+    updatedAt?: Date
 }
 
 export type WordActionType = {
@@ -23,7 +29,7 @@ export interface IUserType {
     _id: string
     login: string
     email: string
-    nativeLanguage: ILanguageType
+    nativeLanguage: string
     createdAt: Date
     updatedAt: Date
 }
@@ -32,4 +38,20 @@ export enum RequestStatusesEnum {
     Success,
     Pending,
     Failure
+}
+
+export interface IThemeType {
+    _id: string
+    words: Array<string>
+    name: string
+    createdAt: Date
+    updatedAt: Date
+    creator: string
+}
+
+export type CreateWordFormValuesType = {
+    word: string
+    translate: string
+    wordLanguage: string
+    translateLanguage: string
 }

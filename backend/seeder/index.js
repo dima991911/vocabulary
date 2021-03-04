@@ -23,10 +23,10 @@ module.exports = seed = async () => {
     const createdTheme = await Theme.create(theme);
 
     const words = [
-        { word: 'do', translate: 'робити', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id },
-        { word: 'create', translate: 'створювати', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id },
-        { word: 'draw', translate: 'малювати', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id, theme: createdTheme._id },
-        { word: 'some', translate: 'хтось', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[1]._id, creator: createdUsers[0]._id, theme: createdTheme._id },
+        { word: 'do', translate: 'робити', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[0]._id, creator: createdUsers[0]._id },
+        { word: 'create', translate: 'створювати', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[0]._id, creator: createdUsers[0]._id },
+        { word: 'draw', translate: 'малювати', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[0]._id, creator: createdUsers[0]._id, theme: createdTheme._id },
+        { word: 'some', translate: 'хтось', wordLanguage: createdLanguages[1]._id, translateLanguage: createdLanguages[0]._id, creator: createdUsers[0]._id, theme: createdTheme._id },
     ];
 
     const createdWords = await Word.insertMany(words);

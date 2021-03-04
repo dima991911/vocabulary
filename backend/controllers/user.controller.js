@@ -12,7 +12,7 @@ module.exports.login = async (req, res) => {
         return;
     }
 
-    user = await User.findById(user._id, '-password -words').populate({ path: 'nativeLanguage' });
+    user = await User.findById(user._id, '-password');
     const token = user.getJwtToken();
     res.status(200).json({ token, user });
 };
@@ -37,7 +37,7 @@ module.exports.registration = async (req, res) => {
     }
 
     let createdUser = await User.create({ login, password, email, nativeLanguage, phone });
-    createdUser = await User.findById(createdUser._id, '-password -words').populate({ path: 'nativeLanguage' });
+    createdUser = await User.findById(createdUser._id, '-password');
 
     const token = createdUser.getJwtToken();
 
@@ -47,6 +47,6 @@ module.exports.registration = async (req, res) => {
 module.exports.auth = async (req, res) => {
     const { currentUser } = req;
 
-    const user = await User.findById(currentUser._id, '-password -words').populate({ path: 'nativeLanguage' });
+    const user = await User.findById(currentUser._id, '-password');
     res.status(200).json({ user });
 };

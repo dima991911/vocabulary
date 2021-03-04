@@ -1,0 +1,10 @@
+.word-item-info-item {
+    font-size: 14px;
+    padding: 5px 0;
+}
+
+.hide-translate {
+    font-style: italic;
+    opacity: .8;
+    cursor: pointer;
+}

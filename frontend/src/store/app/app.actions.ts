@@ -4,8 +4,8 @@ import { ILanguageType } from "../../types/types";
 import { AppStateType } from "../index";
 import { languagesAPI } from "../../api";
 
-export const SET_LANGUAGES = "SET_LANGUAGES";
-export const SET_GLOBAL_LOADING = "SET_GLOBAL_LOADING";
+export const SET_LANGUAGES = "[APP] SET_LANGUAGES";
+export const SET_GLOBAL_LOADING = "[APP] SET_GLOBAL_LOADING";
 
 export type SetGlobalLoadingActionType = {
     type: typeof SET_GLOBAL_LOADING

@@ -6,14 +6,16 @@ import * as appActions from "./app/app.actions";
 import * as userActions from "./user/user.actions";
 
 // reducers
-import { wordReducer } from './word/words.reducer';
+import { wordReducer } from './word/word.reducer';
 import { appReducer } from "./app/app.reducer";
 import { userReducer } from "./user/user.reducer";
+import { themeReducer } from "./theme/theme.reducer";
 
 const rootReducer = combineReducers({
     word: wordReducer,
     app: appReducer,
     user: userReducer,
+    theme: themeReducer,
 });
 
 type RootReducerType = typeof rootReducer;
