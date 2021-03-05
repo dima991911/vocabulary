@@ -10,4 +10,5 @@ import RateComponent from "./Rate/Rate";
 import CreateWordFormModal from "./Vocabulary/CreateWordFormModal/CreateWordFormModal";
 
 export { GuardRoute, HeaderMenuComponent, LeftSidebar, Loading,
-    SkeletonLoading, WordItem, DropdownActions, TranslateItem, RateComponent, CreateWordFormModal };
+    SkeletonLoading, WordItem, DropdownActions, TranslateItem, RateComponent,
+    CreateWordFormModal };

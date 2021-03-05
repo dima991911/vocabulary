@@ -5,10 +5,10 @@ import { PlusOutlined } from '@ant-design/icons'
 
 import { CreateWordFormModal, SkeletonLoading, WordItem } from '../../components';
 
-import { addWord, fetchWords } from "../../store/word/word.actions";
+import { addWord, deleteWord, fetchWords } from "../../store/word/word.actions";
 import { fetchThemes } from "../../store/theme/theme.actions";
 
-import { CreateWordFormValuesType, IWord, RequestStatusesEnum } from "../../types/types";
+import { NewWordType, IWord, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../../store";
 
 import './Vocabulary.css';
@@ -23,12 +23,13 @@ type MapStateToProps = {
 type MapDispatchToProps = {
     fetchWords: () => void
     fetchThemes: () => void
-    addWord: (word: IWord) => any // TODO: Here is Promise. Add type here
+    deleteWord: (id: string) => void
+    addWord: (word: NewWordType) => any // TODO: Here is Promise. Add type here
 }
 
 type PropsType = MapStateToProps & MapDispatchToProps;
 
-const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, fetchWordsStatus
+const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWord, fetchWordsStatus
                                        , addWordStatus, addWordErrorMessage, words }) => {
     const [showAllTranslate, setShowAllTranslate] = useState<boolean>(false);
     const [isCreateWordModalOpen, setIsCreateWordModalOpen] = useState<boolean>(false);
@@ -50,7 +51,7 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, fetchWord
         setIsCreateWordModalOpen(false);
     }
 
-    const handleOkCreateWordModal = async (values: CreateWordFormValuesType) => {
+    const handleOkCreateWordModal = async (values: NewWordType) => {
         const result: RequestStatusesEnum = await addWord(values);
         if (result === RequestStatusesEnum.Success) {
             setIsCreateWordModalOpen(false);
@@ -84,7 +85,7 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, fetchWord
             <List
                 dataSource={words}
                 itemLayout="horizontal"
-                renderItem={(word: IWord) => <WordItem showTranslate={showAllTranslate} word={word} />}
+                renderItem={(word: IWord) => <WordItem showTranslate={showAllTranslate} word={word} deleteWord={deleteWord} />}
             />
 
             <CreateWordFormModal
@@ -107,5 +108,5 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
 };
 
 export default connect<MapStateToProps, MapDispatchToProps, unknown, AppStateType>(
-    mapStateToProps, { fetchThemes, fetchWords, addWord }
+    mapStateToProps, { fetchThemes, fetchWords, addWord, deleteWord }
     )(Vocabulary);

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useSelector } from "react-redux";
-import { Tag, List } from "antd";
+import { Tag, List, Modal } from "antd";
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { ILanguageType, IWord } from "../../../types/types";
 
@@ -9,12 +10,16 @@ import { DropdownActions, TranslateItem, RateComponent } from '../../index';
 import './WordItem.css';
 import { AppStateType } from "../../../store";
 
+const { confirm } = Modal;
+
 type PropsType = {
     word: IWord
     showTranslate: boolean
+
+    deleteWord: (wordId: string) => void
 }
 
-const WordItem: FC<PropsType> = ({ word, showTranslate }) => {
+const WordItem: FC<PropsType> = ({ word, showTranslate, deleteWord }) => {
     const wordLanguage = useSelector<AppStateType, ILanguageType | undefined>(state => state.app.languages.find(l => l._id === word.wordLanguage));
     const translateLanguage = useSelector<AppStateType, ILanguageType | undefined>(state => state.app.languages.find(l => l._id === word.translateLanguage));
 
@@ -23,8 +28,16 @@ const WordItem: FC<PropsType> = ({ word, showTranslate }) => {
     }
 
     const onDelete = () => {
-        console.log('delete');
+        confirm({
+            title: 'Do you want to delete this word?',
+            icon: <ExclamationCircleOutlined />,
+            onOk: handleDeleteWord
+        });
     }
+
+    const handleDeleteWord = async () => {
+        await deleteWord(word._id);
+    };
 
     const onChangeRate = (value: number) => {
         console.log(value);
@@ -32,7 +45,7 @@ const WordItem: FC<PropsType> = ({ word, showTranslate }) => {
 
     const actions = [
         { title: 'Edit', onClick: onEdit },
-        { title: 'Delete', onClick: onDelete, danger: true },
+        { title: 'Delete', onClick: onDelete, confirmMessage: 'Are you sure?' , danger: true },
     ]
 
     return (

@@ -3,7 +3,7 @@ import { Modal, Form, Input, Select } from "antd";
 import { useSelector } from "react-redux";
 
 import { AppStateType } from "../../../store";
-import { ILanguageType, CreateWordFormValuesType } from "../../../types/types";
+import { ILanguageType, NewWordType } from "../../../types/types";
 
 const { Option } = Select;
 
@@ -11,13 +11,13 @@ type PropsType = {
     isOpenModal: boolean
     confirmLoading: boolean
     onCancel: () => void
-    onOk: (values: CreateWordFormValuesType) => void
+    onOk: (values: NewWordType) => void
 }
 
 const CreateWordFormModal: FC<PropsType> = ({ isOpenModal, confirmLoading ,onCancel, onOk }) => {
     const userNativeLanguage = useSelector<AppStateType, string>(state => state.user.currentUser?.nativeLanguage || '');
     const languages = useSelector<AppStateType, Array<ILanguageType>>(state => state.app.languages);
-    const [form] = Form.useForm<CreateWordFormValuesType>();
+    const [form] = Form.useForm<NewWordType>();
 
     const handleOkModal = () => {
         form.validateFields().then(values => {
@@ -25,7 +25,7 @@ const CreateWordFormModal: FC<PropsType> = ({ isOpenModal, confirmLoading ,onCan
         });
     }
 
-    const initialFormValues: CreateWordFormValuesType = {
+    const initialFormValues: NewWordType = {
         word: '',
         translate: '',
         wordLanguage: '603a9aaa1070c51544b989c0',

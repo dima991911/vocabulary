@@ -1,5 +1,5 @@
 export interface IWord {
-    _id?: number
+    _id: string
     word: string
     translate: string
     wordLanguage: string
@@ -49,7 +49,7 @@ export interface IThemeType {
     creator: string
 }
 
-export type CreateWordFormValuesType = {
+export type NewWordType = {
     word: string
     translate: string
     wordLanguage: string
