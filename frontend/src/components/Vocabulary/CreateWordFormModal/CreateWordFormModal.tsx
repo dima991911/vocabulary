@@ -25,6 +25,10 @@ const CreateWordFormModal: FC<PropsType> = ({ isOpenModal, confirmLoading ,onCan
         });
     }
 
+    const handleAfterClose = () => {
+        form.resetFields();
+    }
+
     const initialFormValues: NewWordType = {
         word: '',
         translate: '',
@@ -36,6 +40,7 @@ const CreateWordFormModal: FC<PropsType> = ({ isOpenModal, confirmLoading ,onCan
         <Modal
             title="Add Word"
             visible={isOpenModal}
+            afterClose={handleAfterClose}
             confirmLoading={confirmLoading}
             onCancel={onCancel}
             onOk={handleOkModal}

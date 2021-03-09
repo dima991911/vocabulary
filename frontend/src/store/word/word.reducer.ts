@@ -5,6 +5,7 @@ import {
     ADD_WORD_STATUS,
     DELETE_WORD_ERROR_MESSAGE,
     DELETE_WORD_STATUS,
+    SET_COUNT_WORDS,
     SET_FETCH_WORDS_STATUS,
     SET_WORDS
 } from "./word.actions";
@@ -12,6 +13,7 @@ import {
 const initialState = {
     words: [] as Array<IWord>,
     fetchWordsStatus: null as RequestStatusesEnum | null,
+    countWords: 0 as number,
 
     deleteWordStatus: null as RequestStatusesEnum | null,
     deleteWordErrorMessage: null as string | null,
@@ -36,6 +38,8 @@ export const wordReducer = (state = initialState, action: ActionsTypes): Initial
             return { ...state, deleteWordStatus: action.status };
         case DELETE_WORD_ERROR_MESSAGE:
             return { ...state, deleteWordErrorMessage: action.message };
+        case SET_COUNT_WORDS:
+            return { ...state, countWords: action.countWords };
         default:
             return state;
     }

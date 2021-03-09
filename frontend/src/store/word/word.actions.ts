@@ -8,6 +8,8 @@ import { wordAPI } from "../../api";
 export const ADD_WORD_STATUS = '[WORD] ADD_WORD_STATUS';
 export const ADD_WORD_ERROR_MESSAGE = '[WORD] ADD_WORD_ERROR_MESSAGE';
 
+export const SET_COUNT_WORDS = '[WORD] SET_COUNT_WORDS';
+
 export const DELETE_WORD_STATUS = '[WORD] DELETE_WORD_STATUS';
 export const DELETE_WORD_ERROR_MESSAGE = '[WORD] DELETE_WORD_ERROR_MESSAGE';
 
@@ -58,6 +60,13 @@ export const setDeleteWordErrorMessage = (message: string | null): SetDeleteWord
     { type: DELETE_WORD_ERROR_MESSAGE, message }
 );
 
+export type SetCountWordsType = {
+    type: typeof SET_COUNT_WORDS
+    countWords: number
+}
+
+export const setCountWords = (countWords: number): SetCountWordsType => ({ type: SET_COUNT_WORDS, countWords });
+
 export const deleteWord = (wordId: string): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return async (dispatch, getState) => {
         try {
@@ -65,8 +74,11 @@ export const deleteWord = (wordId: string): ThunkAction<void, AppStateType, unkn
             await wordAPI.deleteWord(wordId);
 
             const words = getState().word.words.filter(w => w._id !== wordId);
+            const countWords = getState().word.countWords;
 
             dispatch(setWords(words));
+            dispatch(setCountWords(countWords - 1));
+
             dispatch(deleteWordStatus(RequestStatusesEnum.Success));
             dispatch(setDeleteWordErrorMessage(null));
 
@@ -86,9 +98,11 @@ export const addWord = (word: NewWordType): ThunkAction<Promise<RequestStatusesE
             dispatch(setAddWordStatus(RequestStatusesEnum.Pending));
             const data = await wordAPI.addWord(word);
 
-            const words = getState().word.words;
+            const { words, countWords } = getState().word;
 
             dispatch(setWords([data.word, ...words]));
+            dispatch(setCountWords(countWords + 1));
+
             dispatch(setAddWordStatus(RequestStatusesEnum.Success));
             dispatch(setAddWordErrorMessage(null));
 
@@ -104,11 +118,15 @@ export const addWord = (word: NewWordType): ThunkAction<Promise<RequestStatusesE
 }
 
 export const fetchWords = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
+            const words = getState().word.words;
+
             dispatch(setFetchWordStatus(RequestStatusesEnum.Pending));
-            const data = await wordAPI.fetchWords();
-            dispatch(setWords(data.words));
+            const data = await wordAPI.fetchWords(words.length);
+
+            dispatch(setWords([ ...words, ...data.words ]));
+            dispatch(setCountWords(data.countWords));
 
             dispatch(setFetchWordStatus(RequestStatusesEnum.Success));
         } catch (e) {
@@ -118,4 +136,5 @@ export const fetchWords = (): ThunkAction<void, AppStateType, unknown, ActionsTy
 }
 
 export type ActionsTypes = SetAddWordStatusActionType | SetAddWordErrorMessageType
-    | SetFetchWordStatusActionType | SetWordsActionType | DeleteWordStatusActionType| SetDeleteWordErrorMessageActionType;
+    | SetFetchWordStatusActionType | SetWordsActionType | DeleteWordStatusActionType| SetDeleteWordErrorMessageActionType
+    | SetCountWordsType;

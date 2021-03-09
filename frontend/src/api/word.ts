@@ -3,6 +3,8 @@ import { IThemeType, IWord, NewWordType } from "../types/types";
 
 type FetchWordsType = {
     words: Array<IWord>
+    countWords: number
+    currentPage: number
 }
 
 type FetchThemesType = {
@@ -18,8 +20,8 @@ type DeleteWordType = {
 }
 
 export const wordAPI = {
-    fetchWords() {
-        return instance.get<FetchWordsType>('words?token=' + getToken()).then(data => data.data);
+    fetchWords(offset: number = 0) {
+        return instance.get<FetchWordsType>(`words?offset=${offset}&token=${getToken()}`).then(data => data.data);
     },
     fetchThemes() {
         return instance.get<FetchThemesType>('themes?token=' + getToken()).then(data => data.data);

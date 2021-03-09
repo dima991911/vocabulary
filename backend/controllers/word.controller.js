@@ -40,11 +40,11 @@ module.exports.createWord = async (req, res) => {
 
 module.exports.getWords = async (req, res) => {
     const { currentUser } = req;
+    const { limit = 20, offset = 0 } = req.query;
 
-    await new Promise(r => setTimeout(r, 2500));
-    const words = await Word.find({ creator: currentUser._id });
+    const words = await Word.paginate({ creator: currentUser._id }, { limit: limit, offset, sort: { createdAt: -1 } });
 
-    res.status(200).json({ words });
+    res.status(200).json({ words: words.docs, countWords: words.totalDocs, currentPage: words.page });
 };
 
 module.exports.getThemes = async (req, res) => {
