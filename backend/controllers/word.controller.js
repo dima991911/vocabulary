@@ -57,10 +57,24 @@ module.exports.getThemes = async (req, res) => {
 
 // TODO: create logic
 module.exports.editWord = async (req, res) => {
-    const { word, translate, wordLanguage, translateLanguage } = req.body;
-    const { id } = req.params;
+    const { word } = req.body;
+    const { id: wordId } = req.params;
 
-    res.status(200).json({ message: 'Have not implemented yet' });
+    const user = await User.findById(req.currentUser._id);
+    let foundWord = await Word.findById(wordId);
+
+    if (!user._id.equals(foundWord.creator)) {
+        res.status(409).json({ message: 'This not your word' });
+        return;
+    }
+
+    for (let key in word) {
+        foundWord[key] = word[key];
+    }
+
+    await foundWord.save();
+
+    res.status(200).json({ word: foundWord });
 };
 
 module.exports.deleteWord = async (req, res) => {

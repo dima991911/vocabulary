@@ -112,6 +112,7 @@ export const auth = (): ThunkAction<void, AppStateType, unknown, AuthTypes> => {
             }
         } catch (e) {
             dispatch(logout());
+            dispatch(setGlobalLoading(false));
         }
     }
 }

@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons'
 
 import { CreateWordFormModal, SkeletonLoading, WordItem } from '../../components';
 
-import { addWord, deleteWord, fetchWords } from "../../store/word/word.actions";
+import { addWord, deleteWord, fetchWords, updateWord } from "../../store/word/word.actions";
 import { fetchThemes } from "../../store/theme/theme.actions";
 
 import { IWord, NewWordType, RequestStatusesEnum } from "../../types/types";
@@ -26,11 +26,13 @@ type MapDispatchToProps = {
     fetchThemes: () => void
     deleteWord: (id: string) => void
     addWord: (word: NewWordType) => any // TODO: Here is Promise. Add type here
+    updateWord: (word: IWord) => any
 }
 
 type PropsType = MapStateToProps & MapDispatchToProps;
 
-const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWord, fetchWordsStatus
+const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord,
+                                       deleteWord, fetchWordsStatus, updateWord
                                        , addWordStatus, words,
                                    countWords }) => {
     const [showAllTranslate, setShowAllTranslate] = useState<boolean>(false);
@@ -104,7 +106,14 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
                 dataSource={words}
                 itemLayout="horizontal"
                 loadMore={loadMoreButton}
-                renderItem={(word: IWord) => <WordItem showTranslate={showAllTranslate} word={word} deleteWord={deleteWord} />}
+                renderItem={(word: IWord) => (
+                    <WordItem
+                        showTranslate={showAllTranslate}
+                        word={word}
+                        deleteWord={deleteWord}
+                        updateWord={updateWord}
+                    />
+                )}
             />
 
             <CreateWordFormModal
@@ -127,5 +136,5 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
 };
 
 export default connect<MapStateToProps, MapDispatchToProps, unknown, AppStateType>(
-    mapStateToProps, { fetchThemes, fetchWords, addWord, deleteWord }
+    mapStateToProps, { fetchThemes, fetchWords, addWord, deleteWord, updateWord }
     )(Vocabulary);

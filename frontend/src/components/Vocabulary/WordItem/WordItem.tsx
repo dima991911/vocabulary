@@ -17,9 +17,10 @@ type PropsType = {
     showTranslate: boolean
 
     deleteWord: (wordId: string) => void
+    updateWord: (word: IWord) => void
 }
 
-const WordItem: FC<PropsType> = ({ word, showTranslate, deleteWord }) => {
+const WordItem: FC<PropsType> = ({ word, showTranslate, deleteWord, updateWord }) => {
     const wordLanguage = useSelector<AppStateType, ILanguageType | undefined>(state => state.app.languages.find(l => l._id === word.wordLanguage));
     const translateLanguage = useSelector<AppStateType, ILanguageType | undefined>(state => state.app.languages.find(l => l._id === word.translateLanguage));
 
@@ -40,7 +41,7 @@ const WordItem: FC<PropsType> = ({ word, showTranslate, deleteWord }) => {
     };
 
     const onChangeRate = (value: number) => {
-        console.log(value);
+        updateWord({ ...word, rate: value });
     };
 
     const actions = [
@@ -60,10 +61,9 @@ const WordItem: FC<PropsType> = ({ word, showTranslate, deleteWord }) => {
                 />
             </div>
 
-
             <div className="actions-wrapper">
                 <div className="flex-row flex-align-end">
-                    <RateComponent value={2} onChange={onChangeRate} />
+                    <RateComponent value={word.rate} onChange={onChangeRate} />
 
                     <div className="word-item-actions">
                         <DropdownActions actions={actions} />

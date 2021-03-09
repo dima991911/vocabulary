@@ -67,6 +67,21 @@ export type SetCountWordsType = {
 
 export const setCountWords = (countWords: number): SetCountWordsType => ({ type: SET_COUNT_WORDS, countWords });
 
+export const updateWord = (word: IWord): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
+    return async (dispatch, getState) => {
+        let prevWords = getState().word.words;
+        try {
+            const words = getState().word.words.map(w => w._id !== word._id ? w : word);
+            dispatch(setWords(words));
+
+            await wordAPI.updateWord(word);
+        } catch (e) {
+            message.error(e.response.data.message);
+            dispatch(setWords(prevWords));
+        }
+    }
+}
+
 export const deleteWord = (wordId: string): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return async (dispatch, getState) => {
         try {
