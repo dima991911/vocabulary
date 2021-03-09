@@ -8,7 +8,7 @@ import { CreateWordFormModal, SkeletonLoading, WordItem } from '../../components
 import { addWord, deleteWord, fetchWords } from "../../store/word/word.actions";
 import { fetchThemes } from "../../store/theme/theme.actions";
 
-import { NewWordType, IWord, RequestStatusesEnum } from "../../types/types";
+import { IWord, NewWordType, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../../store";
 
 import './Vocabulary.css';
@@ -18,6 +18,7 @@ type MapStateToProps = {
     fetchWordsStatus: RequestStatusesEnum | null
     addWordStatus: RequestStatusesEnum | null
     addWordErrorMessage: string | null
+    countWords: number,
 }
 
 type MapDispatchToProps = {
@@ -30,7 +31,8 @@ type MapDispatchToProps = {
 type PropsType = MapStateToProps & MapDispatchToProps;
 
 const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWord, fetchWordsStatus
-                                       , addWordStatus, addWordErrorMessage, words }) => {
+                                       , addWordStatus, words,
+                                   countWords }) => {
     const [showAllTranslate, setShowAllTranslate] = useState<boolean>(false);
     const [isCreateWordModalOpen, setIsCreateWordModalOpen] = useState<boolean>(false);
 
@@ -41,6 +43,10 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
 
     const onShowAllTranslate = () => {
         setShowAllTranslate(!showAllTranslate);
+    };
+
+    const onLoadWords = () => {
+        fetchWords();
     };
 
     const openCreateWordModal = () => {
@@ -58,9 +64,21 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
         }
     }
 
-    if (fetchWordsStatus === RequestStatusesEnum.Pending) {
+    if (fetchWordsStatus === RequestStatusesEnum.Pending && countWords === 0) {
         return <SkeletonLoading items={3} />
     }
+
+    const loadMoreButton =
+        countWords !== words.length ? (
+            <div className="load-more-button">
+                <Button
+                    onClick={onLoadWords}
+                    loading={fetchWordsStatus === RequestStatusesEnum.Pending}
+                >
+                    loading more
+                </Button>
+            </div>
+        ) : null;
 
     return (
         <div className="page-container">
@@ -85,6 +103,7 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
             <List
                 dataSource={words}
                 itemLayout="horizontal"
+                loadMore={loadMoreButton}
                 renderItem={(word: IWord) => <WordItem showTranslate={showAllTranslate} word={word} deleteWord={deleteWord} />}
             />
 

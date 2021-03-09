@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const { Schema } = mongoose;
 
@@ -18,5 +19,7 @@ const WordSchema = new Schema({
 }, {
     timestamps: true
 });
+
+WordSchema.plugin(mongoosePaginate);
 
 mongoose.model('Word', WordSchema);
