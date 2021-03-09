@@ -4,6 +4,7 @@ export interface IWord {
     translate: string
     wordLanguage: string
     translateLanguage: string
+    rate: WordRateEnum,
     theme?: string
     creator?: string
     createdAt?: Date
@@ -38,6 +39,12 @@ export enum RequestStatusesEnum {
     Success,
     Pending,
     Failure
+}
+
+export enum WordRateEnum {
+    BAD = 1,
+    NORMAL,
+    GOOD
 }
 
 export interface IThemeType {

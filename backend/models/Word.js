@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
+const { RateEnum } = require('../enum/enum');
+
 const { Schema } = mongoose;
 
 const WordSchema = new Schema({
@@ -11,6 +13,11 @@ const WordSchema = new Schema({
     translate: {
         type: String,
         required: true,
+    },
+    rate: {
+        type: Number,
+        enum: [RateEnum.BAD, RateEnum.NORMAL, RateEnum.GOOD],
+        default: RateEnum.BAD,
     },
     wordLanguage: { type: Schema.Types.ObjectId, ref: 'Language', required: true },
     translateLanguage: { type: Schema.Types.ObjectId, ref: 'Language', required: true },
