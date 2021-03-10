@@ -19,6 +19,10 @@ type DeleteWordType = {
     id: string
 }
 
+type DeleteWordsType = {
+    deletedWordsIds: Array<string>
+}
+
 type UpdateWord = {
     word: IWord
 }
@@ -35,6 +39,9 @@ export const wordAPI = {
     },
     deleteWord(id: string) {
         return instance.delete<DeleteWordType>(`word/${id}?token=${getToken()}`).then(data => data.data);
+    },
+    deleteWords(ids: string) {
+        return instance.delete<DeleteWordsType>(`words?token=${getToken()}&ids=${ids}`).then(data => data.data);
     },
     updateWord(updatedWord: IWord) {
         return instance.put<UpdateWord>(`word/${updatedWord._id}?token=${getToken()}`, { word: updatedWord }).then(data => data.data);

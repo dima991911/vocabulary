@@ -16,3 +16,7 @@
     height: 32px;
     line-height: 32px;
 }
+
+.delete-all-button {
+    margin-left: 20px;
+}
