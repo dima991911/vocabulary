@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { Rate } from "antd";
 import { FrownOutlined, MehOutlined, SmileOutlined, StarFilled } from "@ant-design/icons";
 
@@ -28,6 +28,7 @@ const RateComponent: FC<PropsType> = ({ value, count= 3,
     return (
         <div>
             <Rate
+                allowClear={false}
                 value={value}
                 count={count}
                 character={renderCharacter}

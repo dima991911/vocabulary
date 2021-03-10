@@ -16,6 +16,7 @@ router.get('/words', isAuth, wordController.getWords);
 router.get('/themes', isAuth, wordController.getThemes);
 router.put('/word/:id', isAuth, wordController.editWord);
 router.delete('/word/:id', isAuth, wordController.deleteWord);
+router.delete('/words', isAuth, wordController.deleteWords);
 
 router.get('/languages', languageController.getLanguage);
 

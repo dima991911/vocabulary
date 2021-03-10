@@ -69,7 +69,7 @@ export const setCountWords = (countWords: number): SetCountWordsType => ({ type:
 
 export const updateWord = (word: IWord): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return async (dispatch, getState) => {
-        let prevWords = getState().word.words;
+        let prevWords = getState().word.words; // if backend return error return prev words
         try {
             const words = getState().word.words.map(w => w._id !== word._id ? w : word);
             dispatch(setWords(words));
@@ -78,6 +78,20 @@ export const updateWord = (word: IWord): ThunkAction<void, AppStateType, unknown
         } catch (e) {
             message.error(e.response.data.message);
             dispatch(setWords(prevWords));
+        }
+    }
+}
+
+export const deleteWords = (ids: Array<string>): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
+    return async (dispatch, getState) => {
+        try {
+            const { deletedWordsIds } = await wordAPI.deleteWords(ids.join(','));
+
+            const newWords = getState().word.words.filter(w => !deletedWordsIds.some(id => w._id === id ));
+            dispatch(setWords(newWords));
+            message.success('Words have deleted');
+        } catch (e) {
+            message.error(e.response.data.message)
         }
     }
 }

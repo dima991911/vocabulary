@@ -102,6 +102,29 @@ module.exports.deleteWord = async (req, res) => {
     res.status(200).json({ wordId });
 };
 
+module.exports.deleteWords = async (req, res) => {
+    const { ids } = req.query;
+    const user = await User.findById(req.currentUser._id);
+    const wordsIdsArray = ids.split(',');
+
+    const findWords = await Word.find({ _id: { $in: wordsIdsArray } });
+
+    if (findWords.some(w => !w.creator.equals(user._id))) {
+        res.status(401).send({ message: `You can't delete not you words` });
+        return;
+    }
+
+    if (findWords.some(w => w.theme)) {
+        await Promise.all([findWords.map(w => _removeWordFromTheme(w.theme, w._id))]);
+    }
+
+    await Word.deleteMany({ _id: { $in: wordsIdsArray } });
+    user.words = user.words.filter(wId => !findWords.some(w => w._id.equals(wId)));
+    await user.save();
+
+    res.status(200).json({ deletedWordsIds: wordsIdsArray });
+};
+
 const _removeWordFromTheme = async (themeId, wordId) => {
     const theme = await Theme.findById(themeId);
     theme.words = theme.words.filter(wId => !wId.equals(wordId));
