@@ -3,11 +3,11 @@ import { ThunkAction } from "redux-thunk";
 import { IUserType, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../index";
 import { authAPI } from "../../api";
-import { setGlobalLoading } from "../app/app.actions";
-
-import { SetGlobalLoadingActionType } from '../app/app.actions';
+import { setGlobalLoading, SetGlobalLoadingActionType } from "../app/app.actions";
 
 export const SET_USER = '[USER] SET_USER';
+export const SET_USER_AUTH_STATUS = '[USER] SET_USER_AUTH_STATUS';
+
 export const SET_SIGNUP_STATUS = '[USER] SET_SIGNUP_STATUS';
 export const SET_SIGNUP_ERROR_MESSAGE = '[USER] SET_SIGNUP_ERROR_MESSAGE_STATUS';
 export const SET_LOGIN_STATUS = '[USER] SET_LOGIN_STATUS';
@@ -61,6 +61,13 @@ export const setLoginErrorMessage = (message: string | null): SetLoginErrorMessa
     { type: SET_LOGIN_ERROR_MESSAGE, message }
 );
 
+type SetUserAuthStatusType = {
+    type: typeof SET_USER_AUTH_STATUS
+    status: RequestStatusesEnum
+}
+
+export const setUserAuthStatus = (status: RequestStatusesEnum): SetUserAuthStatusType => ({ type: SET_USER_AUTH_STATUS, status });
+
 type SignUpActionType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
 
 export const signup = (login: string, password: string, email: string, nativeLanguage: string): SignUpActionType => {
@@ -105,9 +112,12 @@ export const auth = (): ThunkAction<void, AppStateType, unknown, AuthTypes> => {
         try {
             const token = localStorage.getItem('token');
             if (token) {
+                dispatch(setUserAuthStatus(RequestStatusesEnum.Pending));
                 dispatch(setGlobalLoading(true));
                 const userData = await authAPI.auth(token);
+
                 dispatch(setUser(userData.user));
+                dispatch(setUserAuthStatus(RequestStatusesEnum.Success));
                 dispatch(setGlobalLoading(false));
             }
         } catch (e) {
@@ -125,4 +135,4 @@ export const logout = (): ThunkAction<void, AppStateType, unknown, ActionsTypes>
 }
 
 export type ActionsTypes = SignUpStatusActionType | SetUserActionType | SetSignUpErrorMessageActionType
-    | SetLoginErrorMessageActionType | SetLoginStatusActionType;
+    | SetLoginErrorMessageActionType | SetLoginStatusActionType | SetUserAuthStatusType;
