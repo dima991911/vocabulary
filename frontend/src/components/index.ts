@@ -8,7 +8,8 @@ import DropdownActions from "./Vocabulary/DropdownActions/DropdownActions";
 import TranslateItem from "./Vocabulary/TranslateItem/TranslateItem";
 import RateComponent from "./Rate/Rate";
 import CreateWordFormModal from "./Vocabulary/CreateWordFormModal/CreateWordFormModal";
+import FilterForm from "./Vocabulary/FilterForm/FilterForm";
 
 export { GuardRoute, HeaderMenuComponent, LeftSidebar, Loading,
     SkeletonLoading, WordItem, DropdownActions, TranslateItem, RateComponent,
-    CreateWordFormModal };
+    CreateWordFormModal, FilterForm };

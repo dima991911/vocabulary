@@ -47,6 +47,14 @@ export enum WordRateEnum {
     GOOD
 }
 
+// TODO: It can be better
+export enum SortByEnum {
+    GOOD_RATE,
+    BAD_RATE,
+    NEW,
+    OLD
+}
+
 export interface IThemeType {
     _id: string
     words: Array<string>
@@ -61,4 +69,9 @@ export type NewWordType = {
     translate: string
     wordLanguage: string
     translateLanguage: string
+}
+
+export type FilterWordsType = {
+    query: string
+    sortBy: SortByEnum
 }

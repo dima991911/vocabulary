@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { SortByEnum } = require('../enum/enum');
+
 const { Word, User, Language, Theme } = mongoose.models;
 
 module.exports.createWord = async (req, res) => {
@@ -40,9 +42,13 @@ module.exports.createWord = async (req, res) => {
 
 module.exports.getWords = async (req, res) => {
     const { currentUser } = req;
-    const { limit = 20, offset = 0 } = req.query;
+    const { limit = 20, offset = 0, query, sortBy: sort } = req.query;
 
-    const words = await Word.paginate({ creator: currentUser._id }, { limit: limit, offset, sort: { createdAt: -1 } });
+    const sortBy = _sortByObject(+sort);
+
+    const queryRegex = new RegExp(query.toLowerCase().trim(), "i");
+    const words = await Word.paginate({ creator: currentUser._id, $or: [{ word: { $regex: queryRegex } }, { translate: { $regex: queryRegex } }] },
+        { limit: limit, offset, sort: sortBy });
 
     res.status(200).json({ words: words.docs, countWords: words.totalDocs, currentPage: words.page });
 };
@@ -125,8 +131,23 @@ module.exports.deleteWords = async (req, res) => {
     res.status(200).json({ deletedWordsIds: wordsIdsArray });
 };
 
+const _sortByObject = (sortCode) => {
+    switch (sortCode) {
+        case SortByEnum.NEW:
+            return { createdAt: -1 };
+        case SortByEnum.OLD:
+            return { createdAt: 1 };
+        case SortByEnum.GOOD_RATE:
+            return { rate: -1 };
+        case SortByEnum.BAD_RATE:
+            return { rate: 1 };
+        default:
+            return { createdAt: -1 };
+    }
+};
+
 const _removeWordFromTheme = async (themeId, wordId) => {
     const theme = await Theme.findById(themeId);
     theme.words = theme.words.filter(wId => !wId.equals(wordId));
     await theme.save();
-}
+};
