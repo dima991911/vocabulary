@@ -29,7 +29,6 @@ const FilterForm: FC<PropsType> = ({ filter, onChange }) => {
     }
 
     const handleChangeFilterSortByRate = (value: SortByRateEnum) => {
-        debugger;
         onChange({ ...filter, sortByRate: value });
     }
 
