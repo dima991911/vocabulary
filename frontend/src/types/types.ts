@@ -48,11 +48,14 @@ export enum WordRateEnum {
 }
 
 // TODO: It can be better
-export enum SortByEnum {
-    GOOD_RATE,
-    BAD_RATE,
+export enum SortByDateEnum {
     NEW,
     OLD
+}
+
+export enum SortByRateEnum {
+    BAD,
+    GOOD
 }
 
 export interface IThemeType {
@@ -73,5 +76,6 @@ export type NewWordType = {
 
 export type FilterWordsType = {
     query: string
-    sortBy: SortByEnum
+    sortByDate: SortByDateEnum | undefined
+    sortByRate: SortByRateEnum
 }

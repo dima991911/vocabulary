@@ -4,9 +4,12 @@ module.exports.RateEnum = {
     GOOD: 3,
 }
 
-module.exports.SortByEnum = {
-    GOOD_RATE: 0,
-    BAD_RATE: 1,
-    NEW: 2,
-    OLD: 3,
+module.exports.SortByDateEnum = {
+    NEW: 0,
+    OLD: 1,
+}
+
+module.exports.SortByRateEnum = {
+    BAD: 0,
+    GOOD: 1,
 }

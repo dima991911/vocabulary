@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Col, Input, Row, Select } from "antd";
 
-import { FilterWordsType, SortByEnum } from "../../../types/types";
+import { FilterWordsType, SortByRateEnum, SortByDateEnum } from "../../../types/types";
 
 const { Option } = Select;
 
@@ -24,25 +24,44 @@ const FilterForm: FC<PropsType> = ({ filter, onChange }) => {
         }, 1000));
     }
 
-    const handleChangeFilterSortBy = (value: SortByEnum) => {
-        onChange({ ...filter, sortBy: value });
+    const handleChangeFilterSortByDate = (value: SortByDateEnum | undefined) => {
+        onChange({ ...filter, sortByDate: value });
+    }
+
+    const handleChangeFilterSortByRate = (value: SortByRateEnum) => {
+        debugger;
+        onChange({ ...filter, sortByRate: value });
     }
 
     return (
         <Row align="middle">
-            <Col span={8}>
+            <Col span={6}>
+                <Select
+                    value={filter.sortByDate}
+                    onChange={handleChangeFilterSortByDate}
+                    style={{ width: '100%' }}
+                >
+                    <Option value={SortByDateEnum.NEW}>New</Option>
+                    <Option value={SortByDateEnum.OLD}>Old</Option>
+                </Select>
+            </Col>
+            <Col span={12}>
                 <Input
                     placeholder="Find by word or translate"
                     value={filterQuery}
                     onChange={handleChangeFilterQuery}
                 />
             </Col>
-            <Col offset={1} span={6}>
-                <Select value={filter.sortBy} onChange={handleChangeFilterSortBy}>
-                    <Option value={SortByEnum.NEW}>New created</Option>
-                    <Option value={SortByEnum.GOOD_RATE}>Good know</Option>
-                    <Option value={SortByEnum.BAD_RATE}>Bad know</Option>
-                    <Option value={SortByEnum.OLD}>Old created</Option>
+            <Col span={6}>
+                <Select
+                    placeholder="Knowledge rate"
+                    style={{ width: '100%' }}
+                    value={filter.sortByRate}
+                    onChange={handleChangeFilterSortByRate}
+                    allowClear={true}
+                >
+                    <Option value={SortByRateEnum.BAD}>Good</Option>
+                    <Option value={SortByRateEnum.GOOD}>Bad</Option>
                 </Select>
             </Col>
         </Row>

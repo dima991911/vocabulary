@@ -1,4 +1,4 @@
-import { FilterWordsType, IWord, RequestStatusesEnum, SortByEnum } from "../../types/types";
+import { FilterWordsType, IWord, RequestStatusesEnum, SortByDateEnum, SortByRateEnum } from "../../types/types";
 import {
     ActionsTypes,
     ADD_WORD_ERROR_MESSAGE,
@@ -24,7 +24,8 @@ const initialState = {
 
     filter: {
         query: '' as string,
-        sortBy: SortByEnum.NEW as SortByEnum,
+        sortByDate: SortByDateEnum.NEW as SortByDateEnum,
+        sortByRate: undefined as SortByRateEnum | undefined,
     } as FilterWordsType
 };
 
