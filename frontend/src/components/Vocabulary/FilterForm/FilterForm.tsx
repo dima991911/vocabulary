@@ -47,6 +47,7 @@ const FilterForm: FC<PropsType> = ({ filter, onChange }) => {
             </Col>
             <Col span={12}>
                 <Input
+                    allowClear={true}
                     placeholder="Find by word or translate"
                     value={filterQuery}
                     onChange={handleChangeFilterQuery}
