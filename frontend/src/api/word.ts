@@ -1,5 +1,5 @@
 import { instance, getToken } from "./index";
-import { IThemeType, IWord, NewWordType } from "../types/types";
+import { FilterWordsType, IThemeType, IWord, NewWordType } from "../types/types";
 
 type FetchWordsType = {
     words: Array<IWord>
@@ -28,8 +28,10 @@ type UpdateWord = {
 }
 
 export const wordAPI = {
-    fetchWords(offset: number = 0) {
-        return instance.get<FetchWordsType>(`words?offset=${offset}&token=${getToken()}`).then(data => data.data);
+    fetchWords(filter: FilterWordsType | null = null, offset: number = 0) {
+        return instance.get<FetchWordsType>(`words`, {
+            params: { offset, token: getToken(), ...filter }
+        }).then(data => data.data);
     },
     fetchThemes() {
         return instance.get<FetchThemesType>('themes?token=' + getToken()).then(data => data.data);

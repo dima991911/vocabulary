@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import { message } from "antd";
 
-import { IWord, NewWordType, RequestStatusesEnum } from "../../types/types";
+import { FilterWordsType, IWord, NewWordType, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../index";
 import { wordAPI } from "../../api";
 
@@ -15,6 +15,8 @@ export const DELETE_WORD_ERROR_MESSAGE = '[WORD] DELETE_WORD_ERROR_MESSAGE';
 
 export const SET_WORDS = '[WORD] SET_WORDS';
 export const SET_FETCH_WORDS_STATUS = '[WORD] SET_FETCH_WORDS_STATUS';
+
+export const SET_FILTER = '[WORD] SET_FILTER';
 
 export type SetFetchWordStatusActionType = {
     type: typeof SET_FETCH_WORDS_STATUS
@@ -66,6 +68,13 @@ export type SetCountWordsType = {
 }
 
 export const setCountWords = (countWords: number): SetCountWordsType => ({ type: SET_COUNT_WORDS, countWords });
+
+export type SetFilterType = {
+    type: typeof SET_FILTER
+    filter: FilterWordsType
+}
+
+export const setFilter = (filter: FilterWordsType): SetFilterType => ({ type: SET_FILTER, filter });
 
 export const updateWord = (word: IWord): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return async (dispatch, getState) => {
@@ -149,10 +158,10 @@ export const addWord = (word: NewWordType): ThunkAction<Promise<RequestStatusesE
 export const fetchWords = (): ThunkAction<void, AppStateType, unknown, ActionsTypes> => {
     return async (dispatch, getState) => {
         try {
-            const words = getState().word.words;
+            const { words, filter } = getState().word;
 
             dispatch(setFetchWordStatus(RequestStatusesEnum.Pending));
-            const data = await wordAPI.fetchWords(words.length);
+            const data = await wordAPI.fetchWords(filter, words.length);
 
             dispatch(setWords([ ...words, ...data.words ]));
             dispatch(setCountWords(data.countWords));
@@ -166,4 +175,4 @@ export const fetchWords = (): ThunkAction<void, AppStateType, unknown, ActionsTy
 
 export type ActionsTypes = SetAddWordStatusActionType | SetAddWordErrorMessageType
     | SetFetchWordStatusActionType | SetWordsActionType | DeleteWordStatusActionType| SetDeleteWordErrorMessageActionType
-    | SetCountWordsType;
+    | SetCountWordsType | SetFilterType;

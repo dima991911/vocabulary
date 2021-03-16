@@ -1,23 +1,24 @@
 import React, { FC } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 import { PropsType as PagePropsTypes } from "../../types/page";
 import { Classes, Settings, Tests, Vocabulary } from "../index";
 
 import RoutePaths from '../../constants/Route';
-import { IUserType } from "../../types/types";
+import { IUserType, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../../store";
 import { connect } from "react-redux";
 
 type MapStateToPropsType = {
     currentUser: IUserType | null
+    userAuthStatus: RequestStatusesEnum | null
 }
 
 type PropsType = PagePropsTypes & MapStateToPropsType;
 
-const Dashboard: FC<PropsType> = ({ currentUser }) => {
+const Dashboard: FC<PropsType> = ({ currentUser, userAuthStatus }) => {
 
-    if (!currentUser) {
+    if (!currentUser && userAuthStatus !== RequestStatusesEnum.Pending) {
         return <Redirect to={RoutePaths.Login} />
     }
 
@@ -33,13 +34,12 @@ const Dashboard: FC<PropsType> = ({ currentUser }) => {
 }
 
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
-    const { user } = state;
+    const { currentUser, userAuthStatus } = state.user;
 
     return {
-        currentUser: user.currentUser
+        currentUser,
+        userAuthStatus
     }
 };
-
-
 
 export default connect<MapStateToPropsType, unknown, PropsType, AppStateType>(mapStateToProps, null)(Dashboard);

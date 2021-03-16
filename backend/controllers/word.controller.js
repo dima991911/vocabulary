@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { SortByDateEnum, SortByRateEnum } = require('../enum/enum');
+
 const { Word, User, Language, Theme } = mongoose.models;
 
 module.exports.createWord = async (req, res) => {
@@ -40,9 +42,14 @@ module.exports.createWord = async (req, res) => {
 
 module.exports.getWords = async (req, res) => {
     const { currentUser } = req;
-    const { limit = 20, offset = 0 } = req.query;
+    const { limit = 20, offset = 0, query, sortByDate, sortByRate } = req.query;
 
-    const words = await Word.paginate({ creator: currentUser._id }, { limit: limit, offset, sort: { createdAt: -1 } });
+    const sortDate = _sortByDateObject(+sortByDate);
+    const sortRate = _sortByRateObject(+sortByRate);
+
+    const queryRegex = new RegExp(query.toLowerCase().trim(), "i");
+    const words = await Word.paginate({ creator: currentUser._id, $or: [{ word: { $regex: queryRegex } }, { translate: { $regex: queryRegex } }] },
+        { limit: limit, offset, sort: { ...sortRate, ...sortDate } });
 
     res.status(200).json({ words: words.docs, countWords: words.totalDocs, currentPage: words.page });
 };
@@ -125,8 +132,30 @@ module.exports.deleteWords = async (req, res) => {
     res.status(200).json({ deletedWordsIds: wordsIdsArray });
 };
 
+const _sortByDateObject = (sortCode) => {
+    switch (sortCode) {
+        case SortByDateEnum.NEW:
+            return { createdAt: -1 };
+        case SortByDateEnum.OLD:
+            return { createdAt: 1 };
+        default:
+            return { createdAt: -1 };
+    }
+};
+
+const _sortByRateObject = (sortCode) => {
+    switch (sortCode) {
+        case SortByRateEnum.GOOD:
+            return { rate: 1 };
+        case SortByRateEnum.BAD:
+            return { rate: -1 };
+        default:
+            return {};
+    }
+};
+
 const _removeWordFromTheme = async (themeId, wordId) => {
     const theme = await Theme.findById(themeId);
     theme.words = theme.words.filter(wId => !wId.equals(wordId));
     await theme.save();
-}
+};

@@ -1,4 +1,4 @@
-import { IWord, RequestStatusesEnum } from "../../types/types";
+import { FilterWordsType, IWord, RequestStatusesEnum, SortByDateEnum, SortByRateEnum } from "../../types/types";
 import {
     ActionsTypes,
     ADD_WORD_ERROR_MESSAGE,
@@ -7,7 +7,8 @@ import {
     DELETE_WORD_STATUS,
     SET_COUNT_WORDS,
     SET_FETCH_WORDS_STATUS,
-    SET_WORDS
+    SET_WORDS,
+    SET_FILTER
 } from "./word.actions";
 
 const initialState = {
@@ -20,6 +21,12 @@ const initialState = {
 
     addWordStatus: null as RequestStatusesEnum | null,
     addWordErrorMessage: null as string | null,
+
+    filter: {
+        query: '' as string,
+        sortByDate: SortByDateEnum.NEW as SortByDateEnum,
+        sortByRate: undefined as SortByRateEnum | undefined,
+    } as FilterWordsType
 };
 
 type InitialStateType = typeof initialState;
@@ -40,6 +47,8 @@ export const wordReducer = (state = initialState, action: ActionsTypes): Initial
             return { ...state, deleteWordErrorMessage: action.message };
         case SET_COUNT_WORDS:
             return { ...state, countWords: action.countWords };
+        case SET_FILTER:
+            return { ...state, filter: action.filter };
         default:
             return state;
     }

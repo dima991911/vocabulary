@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import { Button, Checkbox, Col, List, Row, Tooltip, Modal } from "antd";
 import { PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 
-import { CreateWordFormModal, SkeletonLoading, WordItem } from '../../components';
+import { CreateWordFormModal, FilterForm, SkeletonLoading, WordItem } from '../../components';
 
-import { addWord, deleteWord, fetchWords, updateWord, deleteWords } from "../../store/word/word.actions";
+import { addWord, deleteWord, fetchWords, updateWord, deleteWords, setFilter, setWords, setCountWords } from "../../store/word/word.actions";
 import { fetchThemes } from "../../store/theme/theme.actions";
 
-import { IWord, NewWordType, RequestStatusesEnum } from "../../types/types";
+import { FilterWordsType, IWord, NewWordType, RequestStatusesEnum } from "../../types/types";
 import { AppStateType } from "../../store";
 
 import './Vocabulary.css';
@@ -21,6 +21,7 @@ type MapStateToProps = {
     addWordStatus: RequestStatusesEnum | null
     addWordErrorMessage: string | null
     countWords: number,
+    filter: FilterWordsType
 }
 
 type MapDispatchToProps = {
@@ -30,12 +31,15 @@ type MapDispatchToProps = {
     addWord: (word: NewWordType) => any // TODO: Here is Promise. Add type here
     updateWord: (word: IWord) => void
     deleteWords: (ids: Array<string>) => void
+    setFilter: (filter: FilterWordsType) => void
+    setWords: (words: Array<IWord>) => void
+    setCountWords: (count: number) => void
 }
 
 type PropsType = MapStateToProps & MapDispatchToProps;
 
 const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWord,
-                                       deleteWords,
+                                       deleteWords, setFilter, setWords, setCountWords, filter,
                                        fetchWordsStatus, updateWord, addWordStatus,
                                        words, countWords }) => {
 
@@ -89,6 +93,13 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
         }
     };
 
+    const handleFilterWords = async (filter: FilterWordsType) => {
+        await setFilter(filter);
+        await setWords([]);
+        await setCountWords(0);
+        fetchWords();
+    };
+
     const toggleShowAllWords = () => {
         setShowAllWords(!showAllWords);
     };
@@ -96,10 +107,6 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
     const toggleShowAllTranslate = () => {
         setShowAllTranslate(!showAllTranslate);
     };
-
-    if (fetchWordsStatus === RequestStatusesEnum.Pending && countWords === 0) {
-        return <SkeletonLoading items={3} />
-    }
 
     const loadMoreButton =
         countWords !== words.length ? (
@@ -116,7 +123,7 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
     return (
         <div className="page-container">
             <div className="page-top">
-                <Row>
+                <Row className="page-top-settings">
                     <Col flex={1}>
                         <Row align="middle" justify="space-between">
                             <Col>
@@ -150,24 +157,32 @@ const Vocabulary: FC<PropsType> = ({ fetchThemes, fetchWords, addWord, deleteWor
                         </Row>
                     </Col>
                 </Row>
+
+                <FilterForm
+                    filter={filter}
+                    onChange={handleFilterWords}
+                />
             </div>
 
-            <List
-                dataSource={words}
-                itemLayout="horizontal"
-                loadMore={loadMoreButton}
-                renderItem={(word: IWord) => (
-                    <WordItem
-                        showWord={showAllWords}
-                        showTranslate={showAllTranslate}
-                        isSelected={selectedWords.some(wId => wId === word._id)}
-                        word={word}
-                        deleteWord={deleteWord}
-                        updateWord={updateWord}
-                        onSelect={handleSelectWord}
-                    />
-                )}
-            />
+            {fetchWordsStatus === RequestStatusesEnum.Pending && countWords === 0 ?
+                <SkeletonLoading items={3} /> :
+                <List
+                    dataSource={words}
+                    itemLayout="horizontal"
+                    loadMore={loadMoreButton}
+                    renderItem={(word: IWord) => (
+                        <WordItem
+                            showWord={showAllWords}
+                            showTranslate={showAllTranslate}
+                            isSelected={selectedWords.some(wId => wId === word._id)}
+                            word={word}
+                            deleteWord={deleteWord}
+                            updateWord={updateWord}
+                            onSelect={handleSelectWord}
+                        />
+                    )}
+                />
+            }
 
             <CreateWordFormModal
                 confirmLoading={addWordStatus === RequestStatusesEnum.Pending}
@@ -189,5 +204,6 @@ const mapStateToProps = (state: AppStateType): MapStateToProps => {
 };
 
 export default connect<MapStateToProps, MapDispatchToProps, unknown, AppStateType>(
-    mapStateToProps, { fetchThemes, fetchWords, addWord, deleteWord, updateWord, deleteWords }
+    mapStateToProps, { fetchThemes, fetchWords, setCountWords, addWord,
+        setWords, deleteWord, updateWord, deleteWords, setFilter }
     )(Vocabulary);
